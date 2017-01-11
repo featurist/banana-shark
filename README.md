@@ -13,7 +13,7 @@ any possibility of asynchronous behaviour.
 ## Declaring Tests
 
 banana-shark tests are expressed as JavaScript modules that export a single
-function with three parameters: `name` (optional), `describe` and `it`:
+function with one `describe` parameter:
 
 ```js
 module.exports = describe => {

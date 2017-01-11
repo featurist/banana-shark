@@ -118,4 +118,34 @@ describe('Parser', () => {
       ]
     })
   })
+
+  it('parses descriptions mixed with assertions', () => {
+    const spec = describe => {
+      describe(
+        () => 101,
+        it => it.shouldEqual(101),
+        describe(
+          () => 202,
+          it => it.shouldEqual(202)
+        )
+      )
+    }
+
+    assertParses(spec, {
+      descriptions: [
+        {
+          factory: () => 101,
+          assertions: [
+            it => it.shouldEqual(101),
+            {
+              factory: () => 202,
+              assertions: [
+                it => it.shouldEqual(202)
+              ]
+            }
+          ]
+        }
+      ]
+    })
+  })
 })

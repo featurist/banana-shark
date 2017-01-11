@@ -25,7 +25,7 @@ const description = (_description, spec, suite, listener) => {
 }
 
 const assertion = (_assertion, _description, spec, suite, listener) => {
-  if (_description.factory) {
+  if (typeof _assertion == 'function') {
     listener.assertionStarted(_assertion, _description, spec, suite)
     const instance = _description.factory()
     const it = itFor(instance)
