@@ -157,9 +157,10 @@ describe(() => new Dog(immediateTimeout),
 })
 ```
 
-## No nested function scopes
+## No Nested Function Scopes
 
 Unlike other testing tools that support nested contexts, `describe` blocks in
 banana-shark are not expressed as functions themselves. In other words,
 `describe` takes the result of `describe` as an argument. This subtle
-difference means tests can be executed in parallel.
+difference means tests are less likely to access shared state and can therefore
+be executed in parallel.
