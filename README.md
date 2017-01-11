@@ -32,8 +32,8 @@ module.exports = describe => {
 factory function, followed by any number of either assertions that operate on
 the result of the factory function, or nested describe blocks.
 
-`it` takes the name of an assertion, followed by a predicate that is passed
-the result of the factory function:
+`it` takes the name of an assertion, followed by a function that is passed
+the result of the factory or mutation:
 
 ```js
 describe(
@@ -42,13 +42,8 @@ describe(
 )
 ```
 
-The predicate is considered to fail when it:
-
-* returns `false`
-* returns an instance of `Error`
-* throws
-* Uses asynchronous code e.g. `setTimeout`, `process.nextTick` and `Promise`
-
+The assertion should throw an error when it fails. If it uses any asynchronous
+code, then it will also fail. There are ways round this. Don't use them.
 Any factory or mutation using asynchronous code is also considered to fail.
 
 ## Assertions
@@ -163,4 +158,4 @@ Unlike other testing tools that support nested contexts, `describe` blocks in
 banana-shark are not expressed as functions themselves. In other words,
 `describe` takes the result of `describe` as an argument. This subtle
 difference means tests are less likely to access shared state and can therefore
-be executed in parallel.
+be executed concurrently.
