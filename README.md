@@ -19,18 +19,18 @@ function with one `describe` parameter:
 module.exports = describe => {
 
   describe(
-    'one hundred and twenty three',              // name
+    'one hundred and twenty three',              // name (optional)
     () => 123,                                   // factory
-    it => it("is less than 200", n => n < 200),  // assertion
-    it => it.equals(123)                         // assertion
+    it => it.equals(123),                        // assertion
+    it => it("is less than 200", n => n < 200)   // assertion
   )
 
 }
 ```
 
-`describe` takes a factory function as its first argument, followed by any
-number of either assertions about the result of the factory function, or nested
-describe blocks.
+`describe` takes an optional name as its first argument, followed by a mandatory
+factory function, followed by any number of either assertions that operate on
+the result of the factory function, or nested describe blocks.
 
 `it` takes the name of an assertion, followed by a predicate that is passed
 the result of the factory function:
