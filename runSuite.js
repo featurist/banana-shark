@@ -1,6 +1,6 @@
 const itFor = require('./it')
 
-const suite = (_suite, listener) => {
+const runSuite = (_suite, listener) => {
   listener.suiteStarted(_suite)
   for (let i = 0; i < _suite.specs.length; ++i) {
     spec(_suite.specs[i], _suite, listener)
@@ -45,4 +45,4 @@ const assertion = (_assertion, _description, spec, suite, listener) => {
   }
 }
 
-module.exports = suite
+module.exports = runSuite

@@ -1,5 +1,5 @@
 const assert = require('assert')
-const runSuite = require('../run')
+const runSuite = require('../runSuite')
 const stringify = require('./support/stringify')
 const Listener = require('./support/listener')
 
