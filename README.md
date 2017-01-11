@@ -21,7 +21,7 @@ module.exports = describe => {
   describe(
     'one hundred and twenty three',              // name (optional)
     () => 123,                                   // factory
-    it => it.equals(123),                        // assertion
+    it => it.shouldEqual(123),                   // assertion
     it => it("is less than 200", n => n < 200)   // assertion
   )
 
@@ -38,7 +38,7 @@ the result of the factory or mutation:
 ```js
 describe(
   () => new Duck(),
-  it => it('quacks', duck => assert.equals('quack!', duck.saySomething()))
+  it => it('quacks', duck => assert.shouldEqual('quack!', duck.saySomething()))
 )
 ```
 
@@ -51,12 +51,12 @@ Any factory or mutation using asynchronous code is also considered to fail.
 `it` provides access to a number of convenience methods to generate
 commonly-used assertions:
 
-* `it.equals(expectedValue)`
-* `it.deeplyEquals(expectedValue)`
-* `it.returns(expectedResult, action)`
-* `it.throws(expectedError)`
-* `it.doesNotThrow()`
-* `it.hasProperty(name, expectedValue)`
+* `it.shouldEqual(expectedValue)`
+* `it.shouldDeeplyEqual(expectedValue)`
+* `it.shouldReturn(expectedResult, action)`
+* `it.shouldThrow([expectedError])`
+* `it.shouldNotThrow()`
+* `it.shouldHaveProperty(name, [expectedValue])`
 
 ## Nested Contexts
 
@@ -66,14 +66,14 @@ for example:
 
 ```js
 describe(
-  () => 1,                // factory
-  it => it.equals(1),     // assertion
+  () => 1,                     // factory
+  it => it.shouldEqual(1),     // assertion
   describe(
-    x  => x + 2,          // mutation
-    it => it.equals(3),   // assertion
+    x  => x + 2,               // mutation
+    it => it.shouldEqual(3),   // assertion
     describe(
-      y  => y + 3,        // mutation
-      it => it.equals(6)  // assertion
+      y  => y + 3,             // mutation
+      it => it.shouldEqual(6)  // assertion
     )
   )
 )
@@ -95,7 +95,7 @@ module.exports = describe => {
     describe("after an item is pushed", stack => stack.push(66),
       it => it("has length", 1),
       it => it("can push an item"),
-      it => it("allows the pushed item to be popped", it.returns(66, stack => stack.pop())),
+      it => it("allows the pushed item to be popped", it.shouldEqual(66, stack => stack.pop())),
       describe("then an item is popped",
         it => it("behaves like an empty stack")
       )
@@ -108,9 +108,9 @@ module.exports = describe => {
     it => it("cannot pop an item")
   )
 
-  describe("has length", (it, expected) => it.hasProperty('length', expected))
-  describe("can push an item", it => it.doesNotThrow(stack => stack.push(42)))
-  describe("cannot pop an item", it => it.throws(stack => stack.pop()))
+  describe("has length", (it, expected) => it.shouldHaveProperty('length', expected))
+  describe("can push an item", it => it.shouldNotThrow(stack => stack.push(42)))
+  describe("cannot pop an item", it => it.shouldThrow(stack => stack.pop()))
 
 }
 ```
@@ -148,7 +148,7 @@ describe(() => new Dog(immediateTimeout),
     dog.saySomething({ hear: sound => said = sound })
     return said
   },
-  it => it.equals("woof!"))
+  it => it.shouldEqual("woof!"))
 })
 ```
 
