@@ -1,51 +1,34 @@
-const Runner = require('.').Runner
+const parseSpec = require('./parseSpec')
+const runSuite = require('./runSuite')
+const PrettyFormatter = require('./prettyFormatter')
+const path = require('path')
 
 class Cli {
 
   run(argv) {
     this.results = []
+    var formatter = new PrettyFormatter(process.stdout)
     const args = argv.slice(2)
+    const suite = { specs: [] }
     return Promise.all(args.map(filePath => {
       try {
-        const spec = require(process.cwd() + '/' + filePath)
-        const args = argv.slice(2)
-        const runner = new Runner(this)
-        runner.runSpec(spec)
+        const fullPath = path.join(process.cwd(), filePath)
+        const spec = parseSpec(require(fullPath))
+        spec.path = fullPath
+        suite.specs.push(spec)
         return Promise.resolve()
       } catch (e) {
         return Promise.reject(e)
       }
     }))
     .then(() => {
-      const errorResults = this.results.filter(r => !!r.error)
-      const passCount = this.results.filter(r => !r.error).length
-      const errorCount = errorResults.length
-      const message = (n, status) => `${n} ${status}`
-      console.log('')
-      if (passCount > 0)  console.log(message(passCount, 'passed'))
-      if (errorCount > 0)  {
-        console.log(message(errorCount, 'failed'))
-        console.log("\nFailures:")
-        errorResults.forEach(result => {
-          console.log(`\n✖ ${result.name}\n${result.stack}`)
-        })
-      }
-      process.exit(errorCount > 0 ? 1 : 0)
+      //console.log(JSON.stringify(suite))
+      return runSuite(suite, formatter)
     })
-    .catch(errors => {
-      console.log(errors)
+    .catch(error => {
+      console.log("ERROR", error)
       process.exit(1)
     })
-  }
-
-  fail(result) {
-    this.results.push(result)
-    console.log('✖ ' + result.name)
-  }
-
-  pass(result) {
-    this.results.push(result)
-    console.log('✔ ' + result.name)
   }
 
 }

@@ -1,7 +1,9 @@
+const { defineSupportCode } = require('cucumber')
 const fs = require('fs')
 const exec = require('child_process').exec
 const mkdirp = require('mkdirp')
 const path = require('path')
+const assert = require('assert')
 
 class TempFileSystem {
   getDirectory() {
@@ -33,31 +35,32 @@ class Shell {
   }
 }
 
-const assert = require('assert')
 
-module.exports = function() {
-  this.Before(function() {
+
+defineSupportCode(function({ Before, Given, When, Then }) {
+
+  Before(function() {
     this.fs = new TempFileSystem()
     this.shell = new Shell(this.fs.getDirectory())
   })
 
-  this.Given('the file {path:stringInDoubleQuotes} contains:', function (path, contents) {
+  Given('the file {path:stringInDoubleQuotes} contains:', function (path, contents) {
     return this.fs.writeFile(path, contents)
   })
 
-  this.When('I run {command:stringInDoubleQuotes}', function (command) {
+  When('I run {command:stringInDoubleQuotes}', function (command) {
     return this.shell.run(command.replace(/^bs /, '../bin/bs.js '))
       .then(result => this.result = result)
   })
 
-  this.Then('it should exit with code {code:int}', function (code) {
+  Then('it should exit with code {code:int}', function (code) {
     assert.equal(this.result.exitCode, code)
   })
 
-  this.Then('the output should include:', function (output) {
+  Then('the output should include:', function (output) {
     const expandedOutput = output.replace(/\{workingDirectory\}/g, this.fs.getDirectory())
     const hr = '----------------------------'
     assert(this.result.stdout.indexOf(expandedOutput) > -1,
       `expected output:\n${hr}\n${expandedOutput}\n${hr}\n...to be included in stdout:\n${hr}\n${this.result.stdout}\n${hr}`)
   });
-}
+})

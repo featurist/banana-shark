@@ -2,7 +2,7 @@ const assert = require('assert')
 const parseSpec = require('../parseSpec')
 const stringify = require('./support/stringify')
 
-describe('Parser', () => {
+describe('Parse', () => {
 
   const assertParses = (spec, expectedParseResult) => {
     const actualParseResult = parseSpec(spec)

@@ -7,7 +7,7 @@ Feature: Running Specs
 
         describe(
           () => 123,
-          it => it.equals(123)
+          it => it.shouldEqual(123)
         )
 
       }
