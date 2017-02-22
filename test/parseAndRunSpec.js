@@ -48,9 +48,9 @@ describe('Running parsed specs', () => {
       actual: 666,
       expected: 999,
       generatedMessage: true,
-      message: "666 == 999",
-      name: "AssertionError",
-      operator: "=="
+      message: '666 == 999',
+      name: 'AssertionError',
+      operator: '=='
     }
 
     assertEvents(events, [

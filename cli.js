@@ -5,7 +5,7 @@ const path = require('path')
 
 class Cli {
 
-  run(argv) {
+  run (argv) {
     this.results = []
     var formatter = new PrettyFormatter(process.stdout)
     const args = argv.slice(2)
@@ -22,17 +22,14 @@ class Cli {
       }
     }))
     .then(() => {
-      //console.log(JSON.stringify(suite))
       return runSuite(suite, formatter)
     })
     .catch(error => {
-      console.log("ERROR", error)
+      console.log('ERROR', error)
       process.exit(1)
     })
   }
 
 }
 
-
-
-module.exports = new Cli
+module.exports = new Cli()

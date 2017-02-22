@@ -14,9 +14,9 @@ Feature: Running Specs
       """
     When I run "bs spec/singlePassing.js"
     Then it should exit with code 0
-    And the output should include:
+    And the output should be:
       """
-      ✔ 123 .equals(123)
+      ✔ 123 .shouldEqual(123)
 
       1 passed
       """
@@ -35,7 +35,7 @@ Feature: Running Specs
       """
     When I run "bs spec/singleFailing.js"
     Then it should exit with code 1
-    And the output should include:
+    And the output should be:
       """
       ✖ () => 666, it.shouldEqual(777)
 
@@ -62,7 +62,7 @@ Feature: Running Specs
       """
     When I run "bs spec/passingAndFailing.js"
     Then it should exit with code 1
-    And the output should include:
+    And the output should be:
       """
       ✔ () => 1, it.shouldEqual(1)
       ✔ () => 2, it.shouldEqual(2)
@@ -90,7 +90,7 @@ Feature: Running Specs
       """
     When I run "bs spec/syntaxError.js"
     Then it should exit with code 1
-    And the output should include:
+    And the output should be:
       """
       {workingDirectory}/spec/syntaxError.js:2
       });

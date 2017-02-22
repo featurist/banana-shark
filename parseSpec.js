@@ -1,14 +1,14 @@
-function parseSpec(spec) {
+function parseSpec (spec) {
   const result = {
     descriptions: []
   }
   const describe = (...args) => {
     const description = { assertions: [] }
-    if (typeof args[0] == 'string') {
+    if (typeof args[0] === 'string') {
       description.name = args[0]
       args = args.slice(1)
     }
-    if (typeof args[0] == 'function') {
+    if (typeof args[0] === 'function') {
       description.factory = args[0]
       args = args.slice(1)
     }

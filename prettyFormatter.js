@@ -1,6 +1,8 @@
 function PrettyFormatter(output) {
   this.output = output
   this.depth = -2
+  this.passCount = 0
+  this.errors = []
 }
 
 PrettyFormatter.prototype.suiteStarted = function() {
@@ -18,11 +20,13 @@ PrettyFormatter.prototype.assertionStarted = function() {
 }
 
 PrettyFormatter.prototype.assertionPassed = function(assertion, description) {
-  this.writeLine('✔ ' + (description.name || description.factory.toString().replace('() =>', '')) + ', ' + assertion.toString())
+  this.passCount++
+  this.writeLine('✔ ' + (description.name || description.factory.toString().replace('() => ', '')) + ', ' + assertion.toString().replace('it => it.', ''))
 }
 
 PrettyFormatter.prototype.assertionFailed = function(error, assertion, description) {
-  this.writeLine('✖ ' + (description.name || description.factory.toString().replace('() =>', '')) + ', ' + assertion.toString())
+  this.errors.push({ error })
+  this.writeLine('✖ ' + (description.name || description.factory.toString().replace('() =>', '')) + ', ' + assertion.toString().replace('it => it.', ''))
   this.writeLine('   at ' + error.stack.split("\n")[2].replace(/^.+\(/, '').replace(/\).*$/, '').replace(process.cwd() + '/', ''))
 }
 
@@ -35,6 +39,8 @@ PrettyFormatter.prototype.specEnded = function(spec) {
 }
 
 PrettyFormatter.prototype.suiteEnded = function() {
+  this.writeLine('')
+  if (this.passCount > 0) this.writeLine(this.passCount + ' passed')
 }
 
 PrettyFormatter.prototype.writeLine = function(line) {

@@ -3,10 +3,14 @@ const stringifyFunctionsIn = result => {
     case 'function':
       return result.toString()
     case 'object':
-      for (const key in result) { result[key] = stringifyFunctionsIn(result[key]) }
+      for (const key in result) {
+        result[key] = stringifyFunctionsIn(result[key])
+      }
       return result
     default:
-      if (result && result.constructor == Array) { return result.map(stringifyFunctionsIn) }
+      if (result && result.constructor === Array) {
+        return result.map(stringifyFunctionsIn)
+      }
       return result
   }
 }
