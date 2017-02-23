@@ -15,7 +15,7 @@ Feature: Running Specs
     Then it should exit with code 0
     And the output should be:
       """
-      ✔ 123.shouldEqual(123)
+      ✔ () => 123, it => it.shouldEqual(123)
 
       1 passed
       """
@@ -35,11 +35,11 @@ Feature: Running Specs
     Then it should exit with code 1
     And the output should be:
       """
-      ✖ 666.shouldEqual(777)
+      ✖ () => 666, it => it.shouldEqual(777)
 
       1 failed
 
-      ✖ 666.shouldEqual(777)
+      ✖ () => 666, it => it.shouldEqual(777)
         AssertionError: 666 == 777
         at spec/singleFailing.js:5:14
       """
@@ -60,18 +60,18 @@ Feature: Running Specs
     Then it should exit with code 1
     And the output should be:
       """
-      ✔ 1.shouldEqual(1)
-      ✔ 2.shouldEqual(2)
-      ✖ 3.shouldEqual(4)
-      ✖ 5.shouldEqual(6)
+      ✔ () => 1, it => it.shouldEqual(1)
+      ✔ () => 2, it => it.shouldEqual(2)
+      ✖ () => 3, it => it.shouldEqual(4)
+      ✖ () => 5, it => it.shouldEqual(6)
 
       2 passed, 2 failed
 
-      ✖ 3.shouldEqual(4)
+      ✖ () => 3, it => it.shouldEqual(4)
         AssertionError: 3 == 4
         at spec/passingAndFailing.js:5:30
 
-      ✖ 5.shouldEqual(6)
+      ✖ () => 5, it => it.shouldEqual(6)
         AssertionError: 5 == 6
         at spec/passingAndFailing.js:6:30
       """

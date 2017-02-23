@@ -18,7 +18,7 @@ describe('Running parsed specs', () => {
     assert.deepEqual(actualEvents, expectedEvents)
   }
 
-  it('runs multiple specs with varied nesting', () => {
+  it('runs multiple specs with various nesting', () => {
     const spec1 = parseSpec(describe => {
       describe(
         () => 123,

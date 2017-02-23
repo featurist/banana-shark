@@ -3,7 +3,7 @@ const runSuite = require('../runSuite')
 const stringify = require('./support/stringify')
 const Listener = require('./support/listener')
 
-describe('Run', () => {
+describe('runSuite', () => {
   const run = suite => {
     const listener = new Listener()
     runSuite(suite, listener)

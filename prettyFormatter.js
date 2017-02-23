@@ -21,11 +21,12 @@ PrettyFormatter.prototype.assertionStarted = function () {
 
 PrettyFormatter.prototype.assertionPassed = function (assertion, description) {
   this.passCount++
-  this.writeLine('✔ ' + (description.name || description.factory.toString().replace('() => ', '')) + '.' + assertion.toString().replace('it => it.', ''))
+  var bullet = '✔ ' + (description.name || description.factory.toString()) + ', ' + assertion.toString()
+  this.writeLine(bullet)
 }
 
 PrettyFormatter.prototype.assertionFailed = function (error, assertion, description) {
-  var bullet = '✖ ' + (description.name || description.factory.toString().replace(/\(\) =>\s+/, '')) + '.' + assertion.toString().replace('it => it.', '')
+  var bullet = '✖ ' + (description.name || description.factory.toString()) + ', ' + assertion.toString()
   this.errors.push({ error, bullet })
   this.writeLine(bullet)
 }
