@@ -1,6 +1,6 @@
 const itFor = require('./it')
 
-const runSuite = (_suite, listener) => {
+function runSuite (_suite, listener) {
   listener.suiteStarted(_suite)
   for (let i = 0; i < _suite.specs.length; ++i) {
     spec(_suite.specs[i], _suite, listener)
@@ -8,7 +8,7 @@ const runSuite = (_suite, listener) => {
   listener.suiteEnded(_suite)
 }
 
-const spec = (_spec, suite, listener) => {
+function spec (_spec, suite, listener) {
   listener.specStarted(_spec, suite)
   for (let i = 0; i < _spec.descriptions.length; ++i) {
     description(_spec.descriptions[i], _spec, suite, listener)
@@ -16,7 +16,7 @@ const spec = (_spec, suite, listener) => {
   listener.specEnded(_spec, suite)
 }
 
-const description = (_description, spec, suite, listener) => {
+function description (_description, spec, suite, listener) {
   listener.descriptionStarted(_description, spec, suite)
   for (let i = 0; i < _description.assertions.length; ++i) {
     assertion(_description.assertions[i], _description, spec, suite, listener)
@@ -24,7 +24,7 @@ const description = (_description, spec, suite, listener) => {
   listener.descriptionEnded(_description, spec, suite)
 }
 
-const assertion = (_assertion, _description, spec, suite, listener) => {
+function assertion (_assertion, _description, spec, suite, listener) {
   if (typeof _assertion === 'function') {
     listener.assertionStarted(_assertion, _description, spec, suite)
     const instance = _description.factory()
