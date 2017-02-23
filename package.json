@@ -7,7 +7,7 @@
     "bs": "./bin/bs.js"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha && cucumber-js",
     "eslint": "eslint **/*.js",
     "eslint-fix": "eslint **/*.js --fix"
   },

@@ -1,13 +1,18 @@
 const parseSpec = require('./parseSpec')
 const runSuite = require('./runSuite')
+const Broadcaster = require('./broadcaster')
 const PrettyFormatter = require('./prettyFormatter')
+const Exiter = require('./exiter')
 const path = require('path')
 
 class Cli {
 
   run (argv) {
     this.results = []
-    var formatter = new PrettyFormatter(process.stdout)
+    const listener = new Broadcaster([
+      new PrettyFormatter(process.stdout),
+      new Exiter()
+    ])
     const args = argv.slice(2)
     const suite = { specs: [] }
     return Promise.all(args.map(filePath => {
@@ -22,11 +27,10 @@ class Cli {
       }
     }))
     .then(() => {
-      return runSuite(suite, formatter)
+      return runSuite(suite, listener)
     })
     .catch(error => {
-      console.log('ERROR', error)
-      process.exit(1)
+      listener.unexpectedError(error)
     })
   }
 

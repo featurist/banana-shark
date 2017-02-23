@@ -56,9 +56,11 @@ defineSupportCode(function ({ Before, Given, When, Then }) {
   })
 
   Then('the output should be:', function (output) {
-    const expandedOutput = output.replace(/\{workingDirectory\}/g, this.fs.getDirectory())
+    const expected = output.replace(/\{workingDirectory\}/g, this.fs.getDirectory())
+    const actual = this.result.stdout.replace(/\n$/, '')
     const hr = '----------------------------'
-    assert.equal(this.result.stdout, expandedOutput,
-      `expected output:\n${hr}\n${expandedOutput}\n${hr}\n...to be included in stdout:\n${hr}\n${this.result.stdout}\n${hr}`)
+    if (expected !== actual) {
+      throw new Error(`\n${hr}\nexpected:\n${hr}\n${expected}\n${hr}\nactual:\n${hr}\n${actual}\n${hr}`)
+    }
   })
 })
