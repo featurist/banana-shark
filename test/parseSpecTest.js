@@ -126,7 +126,8 @@ describe('parseSpec', () => {
         describe(
           () => 202,
           it => it.shouldEqual(202)
-        )
+        ),
+        it => it.shouldEqual(100 + 1)
       )
     }
 
@@ -141,7 +142,8 @@ describe('parseSpec', () => {
               assertions: [
                 it => it.shouldEqual(202)
               ]
-            }
+            },
+            it => it.shouldEqual(100 + 1)
           ]
         }
       ]

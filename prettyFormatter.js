@@ -5,28 +5,22 @@ function PrettyFormatter (output) {
   this.errors = []
 }
 
-PrettyFormatter.prototype.suiteStarted = function () {
-}
-
-PrettyFormatter.prototype.specStarted = function (spec) {
+PrettyFormatter.prototype.specStarted = function () {
   this.depth++
 }
 
-PrettyFormatter.prototype.descriptionStarted = function (description) {
+PrettyFormatter.prototype.descriptionStarted = function () {
   this.depth++
 }
 
-PrettyFormatter.prototype.assertionStarted = function () {
-}
-
-PrettyFormatter.prototype.assertionPassed = function (assertion, description) {
+PrettyFormatter.prototype.assertionPassed = function (assertion) {
   this.passCount++
-  var bullet = '✔ ' + (description.name || description.factory.toString()) + ', ' + assertion.toString()
+  var bullet = '✔ ' + assertion.describe()
   this.writeLine(bullet)
 }
 
-PrettyFormatter.prototype.assertionFailed = function (error, assertion, description) {
-  var bullet = '✖ ' + (description.name || description.factory.toString()) + ', ' + assertion.toString()
+PrettyFormatter.prototype.assertionFailed = function (assertion, error) {
+  var bullet = '✖ ' + assertion.describe()
   this.errors.push({ error, bullet })
   this.writeLine(bullet)
 }
@@ -35,7 +29,7 @@ PrettyFormatter.prototype.descriptionEnded = function () {
   this.depth--
 }
 
-PrettyFormatter.prototype.specEnded = function (spec) {
+PrettyFormatter.prototype.specEnded = function () {
   this.depth--
 }
 

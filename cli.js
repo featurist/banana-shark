@@ -1,5 +1,5 @@
 const parseSpec = require('./parseSpec')
-const runSuite = require('./runSuite')
+const Suite = require('./suite')
 const Broadcaster = require('./broadcaster')
 const PrettyFormatter = require('./prettyFormatter')
 const Exiter = require('./exiter')
@@ -27,7 +27,7 @@ class Cli {
       }
     }))
     .then(() => {
-      return runSuite(suite, listener)
+      return new Suite(suite).run(listener)
     })
     .catch(error => {
       listener.unexpectedError(error)

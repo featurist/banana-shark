@@ -4,7 +4,7 @@ const stringifyFunctionsIn = result => {
       return result.toString()
     case 'object':
       for (const key in result) {
-        result[key] = stringifyFunctionsIn(result[key])
+        if (key !== 'run' && key !== 'suite' && key !== 'parent' && key !== 'description') result[key] = stringifyFunctionsIn(result[key])
       }
       return result
     default:

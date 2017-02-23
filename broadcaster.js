@@ -18,12 +18,12 @@ Broadcaster.prototype.assertionStarted = function () {
   this.withEachListener('assertionStarted')
 }
 
-Broadcaster.prototype.assertionPassed = function (assertion, description) {
-  this.withEachListener('assertionPassed', assertion, description)
+Broadcaster.prototype.assertionPassed = function (assertion) {
+  this.withEachListener('assertionPassed', assertion)
 }
 
-Broadcaster.prototype.assertionFailed = function (error, assertion, description) {
-  this.withEachListener('assertionFailed', error, assertion, description)
+Broadcaster.prototype.assertionFailed = function (assertion, error) {
+  this.withEachListener('assertionFailed', assertion, error)
 }
 
 Broadcaster.prototype.descriptionEnded = function () {

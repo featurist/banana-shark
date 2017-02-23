@@ -11,32 +11,32 @@ class Listener {
     this.events.push({ type: 'suiteEnded', suite })
   }
 
-  specStarted (spec, suite) {
-    this.events.push({ type: 'specStarted', spec, suite })
+  specStarted (spec) {
+    this.events.push({ type: 'specStarted', spec })
   }
 
-  specEnded (spec, suite) {
-    this.events.push({ type: 'specEnded', spec, suite })
+  specEnded (spec) {
+    this.events.push({ type: 'specEnded', spec })
   }
 
-  descriptionStarted (description, spec, suite) {
-    this.events.push({ type: 'descriptionStarted', description, spec, suite })
+  descriptionStarted (description) {
+    this.events.push({ type: 'descriptionStarted', description })
   }
 
   descriptionEnded (description, spec, suite) {
-    this.events.push({ type: 'descriptionEnded', description, spec, suite })
+    this.events.push({ type: 'descriptionEnded', description })
   }
 
-  assertionStarted (assertion, description, spec, suite) {
-    this.events.push({ type: 'assertionStarted', assertion, description, spec, suite })
+  assertionStarted (assertion) {
+    this.events.push({ type: 'assertionStarted', assertion })
   }
 
-  assertionPassed (assertion, description, spec, suite) {
-    this.events.push({ type: 'assertionPassed', assertion, description, spec, suite })
+  assertionPassed (assertion, description) {
+    this.events.push({ type: 'assertionPassed', assertion })
   }
 
-  assertionFailed (error, assertion, description, spec, suite) {
-    this.events.push({ type: 'assertionFailed', error, assertion, description, spec, suite })
+  assertionFailed (assertion, error) {
+    this.events.push({ type: 'assertionFailed', assertion, error })
   }
 }
 

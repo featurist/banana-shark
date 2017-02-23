@@ -1,19 +1,24 @@
 const assert = require('assert')
 const Listener = require('./support/listener')
 const stringify = require('./support/stringify')
-const { parseSpec, runSuite } = require('..')
+const { parseSpec, Suite } = require('..')
 
 describe('Running parsed specs', () => {
 
   const run = suite => {
     const listener = new Listener()
-    runSuite(suite, listener)
+    new Suite(suite).run(listener)
     return listener.events
   }
 
   const assertEvents = (actualEvents, expectedEvents) => {
     stringify.functionsIn(actualEvents)
     stringify.functionsIn(expectedEvents)
+    actualEvents.forEach(event => {
+      for (var key in event) {
+        if (event[key].ast) event[key] = event[key].ast
+      }
+    })
     assert.deepEqual(actualEvents.map(e => e.type), expectedEvents.map(e => e.type))
     assert.deepEqual(actualEvents, expectedEvents)
   }
@@ -55,22 +60,22 @@ describe('Running parsed specs', () => {
 
     assertEvents(events, [
       { type: 'suiteStarted', suite },
-      { type: 'specStarted', suite, spec: spec1 },
-      { type: 'descriptionStarted', suite, spec: spec1, description: description1 },
-      { type: 'assertionStarted', suite, spec: spec1, description: description1, assertion: assertion1 },
-      { type: 'assertionPassed', suite, spec: spec1, description: description1, assertion: assertion1 },
-      { type: 'descriptionStarted', suite, spec: spec1, description: description2 },
-      { type: 'assertionStarted', suite, spec: spec1, description: description2, assertion: assertion2 },
-      { type: 'assertionPassed', suite, spec: spec1, description: description2, assertion: assertion2 },
-      { type: 'descriptionEnded', suite, spec: spec1, description: description2 },
-      { type: 'descriptionEnded', suite, spec: spec1, description: description1 },
-      { type: 'specEnded', suite, spec: spec1 },
-      { type: 'specStarted', suite, spec: spec2 },
-      { type: 'descriptionStarted', suite, spec: spec2, description: description3 },
-      { type: 'assertionStarted', suite, spec: spec2, description: description3, assertion: assertion3 },
-      { type: 'assertionFailed', suite, spec: spec2, description: description3, assertion: assertion3, error: error1 },
-      { type: 'descriptionEnded', suite, spec: spec2, description: description3 },
-      { type: 'specEnded', suite, spec: spec2 },
+      { type: 'specStarted', spec: spec1 },
+      { type: 'descriptionStarted', description: description1 },
+      { type: 'assertionStarted', assertion: assertion1 },
+      { type: 'assertionPassed', assertion: assertion1 },
+      { type: 'descriptionStarted', description: description2 },
+      { type: 'assertionStarted', assertion: assertion2 },
+      { type: 'assertionPassed', assertion: assertion2 },
+      { type: 'descriptionEnded', description: description2 },
+      { type: 'descriptionEnded', description: description1 },
+      { type: 'specEnded', spec: spec1 },
+      { type: 'specStarted', spec: spec2 },
+      { type: 'descriptionStarted', description: description3 },
+      { type: 'assertionStarted', assertion: assertion3 },
+      { type: 'assertionFailed', assertion: assertion3, error: error1 },
+      { type: 'descriptionEnded', description: description3 },
+      { type: 'specEnded', spec: spec2 },
       { type: 'suiteEnded', suite }
     ])
   })

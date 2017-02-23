@@ -1,18 +1,23 @@
 const assert = require('assert')
-const runSuite = require('../runSuite')
+const Suite = require('../suite')
 const stringify = require('./support/stringify')
 const Listener = require('./support/listener')
 
-describe('runSuite', () => {
+describe('Suite', () => {
   const run = suite => {
     const listener = new Listener()
-    runSuite(suite, listener)
+    new Suite(suite).run(listener)
     return listener.events
   }
 
   const assertEvents = (actualEvents, expectedEvents) => {
     stringify.functionsIn(actualEvents)
     stringify.functionsIn(expectedEvents)
+    actualEvents.forEach(event => {
+      for (var key in event) {
+        if (event[key].ast) event[key] = event[key].ast
+      }
+    })
     assert.deepEqual(actualEvents.map(e => e.type), expectedEvents.map(e => e.type))
     assert.deepEqual(actualEvents, expectedEvents)
   }
@@ -39,39 +44,27 @@ describe('runSuite', () => {
       },
       {
         type: 'specStarted',
-        spec: suite.specs[0],
-        suite: suite
+        spec: suite.specs[0]
       },
       {
         type: 'descriptionStarted',
-        description: suite.specs[0].descriptions[0],
-        spec: suite.specs[0],
-        suite: suite
+        description: suite.specs[0].descriptions[0]
       },
       {
         type: 'assertionStarted',
-        assertion: suite.specs[0].descriptions[0].assertions[0],
-        description: suite.specs[0].descriptions[0],
-        spec: suite.specs[0],
-        suite: suite
+        assertion: suite.specs[0].descriptions[0].assertions[0]
       },
       {
         type: 'assertionPassed',
-        assertion: suite.specs[0].descriptions[0].assertions[0],
-        description: suite.specs[0].descriptions[0],
-        spec: suite.specs[0],
-        suite: suite
+        assertion: suite.specs[0].descriptions[0].assertions[0]
       },
       {
         type: 'descriptionEnded',
-        description: suite.specs[0].descriptions[0],
-        spec: suite.specs[0],
-        suite: suite
+        description: suite.specs[0].descriptions[0]
       },
       {
         type: 'specEnded',
-        spec: suite.specs[0],
-        suite: suite
+        spec: suite.specs[0]
       },
       {
         type: 'suiteEnded',
@@ -102,21 +95,15 @@ describe('runSuite', () => {
       },
       {
         type: 'specStarted',
-        spec: suite.specs[0],
-        suite: suite
+        spec: suite.specs[0]
       },
       {
         type: 'descriptionStarted',
-        description: suite.specs[0].descriptions[0],
-        spec: suite.specs[0],
-        suite: suite
+        description: suite.specs[0].descriptions[0]
       },
       {
         type: 'assertionStarted',
-        assertion: suite.specs[0].descriptions[0].assertions[0],
-        description: suite.specs[0].descriptions[0],
-        spec: suite.specs[0],
-        suite: suite
+        assertion: suite.specs[0].descriptions[0].assertions[0]
       },
       {
         type: 'assertionFailed',
@@ -128,21 +115,15 @@ describe('runSuite', () => {
           name: 'AssertionError',
           operator: '=='
         },
-        assertion: suite.specs[0].descriptions[0].assertions[0],
-        description: suite.specs[0].descriptions[0],
-        spec: suite.specs[0],
-        suite: suite
+        assertion: suite.specs[0].descriptions[0].assertions[0]
       },
       {
         type: 'descriptionEnded',
-        description: suite.specs[0].descriptions[0],
-        spec: suite.specs[0],
-        suite: suite
+        description: suite.specs[0].descriptions[0]
       },
       {
         type: 'specEnded',
-        spec: suite.specs[0],
-        suite: suite
+        spec: suite.specs[0]
       },
       {
         type: 'suiteEnded',
@@ -181,51 +162,35 @@ describe('runSuite', () => {
       },
       {
         type: 'specStarted',
-        spec: suite.specs[0],
-        suite: suite
+        spec: suite.specs[0]
       },
       {
         type: 'descriptionStarted',
-        description: outerDescription,
-        spec: suite.specs[0],
-        suite: suite
+        description: outerDescription
       },
       {
         type: 'descriptionStarted',
-        description: innerDescription,
-        spec: suite.specs[0],
-        suite: suite
+        description: innerDescription
       },
       {
         type: 'assertionStarted',
-        assertion: innerDescription.assertions[0],
-        description: innerDescription,
-        spec: suite.specs[0],
-        suite: suite
+        assertion: innerDescription.assertions[0]
       },
       {
         type: 'assertionPassed',
-        assertion: innerDescription.assertions[0],
-        description: innerDescription,
-        spec: suite.specs[0],
-        suite: suite
+        assertion: innerDescription.assertions[0]
       },
       {
         type: 'descriptionEnded',
-        description: innerDescription,
-        spec: suite.specs[0],
-        suite: suite
+        description: innerDescription
       },
       {
         type: 'descriptionEnded',
-        description: outerDescription,
-        spec: suite.specs[0],
-        suite: suite
+        description: outerDescription
       },
       {
         type: 'specEnded',
-        spec: suite.specs[0],
-        suite: suite
+        spec: suite.specs[0]
       },
       {
         type: 'suiteEnded',
