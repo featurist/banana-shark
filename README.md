@@ -210,3 +210,37 @@ banana-shark are not expressed as functions themselves. In other words,
 `describe` takes the result of `describe` as an argument. This subtle
 difference means tests are less likely to access shared state and can therefore
 be executed concurrently.
+
+## Reusable contexts
+
+`behaves like` is a key concept in banana-shark, allowing specs to be composed
+of reusable blocks that build on previous blocks. This is effectively like
+a quick way of defining custom assertions that only apply in a specific scope:
+
+```js
+describe(
+  () => new Man(),
+  it => it.has('legs')
+)
+
+describe(
+  () => new Woman(),
+  it => it.has('legs')
+)
+```
+
+...can be reduced to:
+
+```js
+describe(
+  () => new Man(),
+  it => it('is legged')
+)
+
+describe(
+  () => new Woman(),
+  it => it('is legged')
+)
+
+describe('is legged', it => it.has('legs'))
+```
