@@ -30,7 +30,7 @@ describe('Running specs', () => {
         () => 123,
         it => it.equals(123),
         describe(
-          () => 124,
+          n => n + 1,
           it => it.equals(124)
         )
       )

@@ -52,7 +52,10 @@ defineSupportCode(function ({ Before, Given, When, Then }) {
   })
 
   Then('it should exit with code {code:int}', function (code) {
-    assert.equal(this.result.exitCode, code)
+    if (this.result.exitCode !== code) {
+      const output = this.result.stdout.replace(/\n$/, '')
+      throw new Error(`Expected to exit with code ${code}, but exited with ${this.result.exitCode}\noutput:\n${output}`)
+    }
   })
 
   Then('the output should be:', function (output) {

@@ -90,3 +90,26 @@ Feature: Running Specs
         ^
       SyntaxError: Unexpected end of input
       """
+
+  Scenario: Running a single nested passing spec
+    Given the file "spec/singleNested.js" contains:
+      """
+      module.exports = describe =>
+
+        describe(
+          () => 665,
+          describe(
+            n => n + 1,
+            it => it.equals(666)
+          )
+        )
+
+      """
+    When I run "bs spec/singleNested.js"
+    Then it should exit with code 0
+    And the output should be:
+      """
+      ✔ () => 665, n => n + 1, it => it.equals(666)
+
+      1 passed
+      """
