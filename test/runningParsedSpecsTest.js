@@ -27,17 +27,17 @@ describe('Running parsed specs', () => {
     const spec1 = parseSpec(describe => {
       describe(
         () => 123,
-        it => it.shouldEqual(123),
+        it => it.equals(123),
         describe(
           () => 124,
-          it => it.shouldEqual(124)
+          it => it.equals(124)
         )
       )
     })
     const spec2 = parseSpec(describe => {
       describe(
         () => 666,
-        it => it.shouldEqual(999)
+        it => it.equals(999)
       )
     })
     const suite = { specs: [spec1, spec2] }

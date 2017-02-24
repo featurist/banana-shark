@@ -1,11 +1,11 @@
-const assert = require('assert')
+var assert = require('assert')
 
-const itFor = instance => {
-  return {
-    shouldEqual: other => {
-      assert.equal(instance, other)
-    }
-  }
+function It (instance) {
+  this.instance = instance
 }
 
-module.exports = itFor
+It.prototype.equals = function (other) {
+  assert.equal(this.instance, other)
+}
+
+module.exports = It

@@ -1,4 +1,4 @@
-const itFor = require('./it')
+var It = require('./it')
 
 function Assertion (ast, description) {
   this.ast = ast
@@ -9,7 +9,7 @@ function Assertion (ast, description) {
 Assertion.prototype.run = function (listener) {
   listener.assertionStarted(this)
   var instance = this.description.factory()
-  var it = itFor(instance)
+  var it = new It(instance)
   var error
   try {
     this.func(it)

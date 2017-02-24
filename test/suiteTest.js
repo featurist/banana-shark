@@ -30,7 +30,7 @@ describe('Suite', () => {
             {
               factory: () => 123,
               assertions: [
-                it => it.shouldEqual(123)
+                it => it.equals(123)
               ]
             }
           ]
@@ -81,7 +81,7 @@ describe('Suite', () => {
             {
               factory: () => 666,
               assertions: [
-                it => it.shouldEqual(999)
+                it => it.equals(999)
               ]
             }
           ]
@@ -144,7 +144,7 @@ describe('Suite', () => {
                   name: 'inner',
                   factory: () => 333,
                   assertions: [
-                    it => it.shouldEqual(333)
+                    it => it.equals(333)
                   ]
                 }
               ]

@@ -13,14 +13,14 @@ describe('parseSpec', () => {
 
   it('parses an anonymous description', () => {
     const spec = describe => {
-      describe(() => 123, it => it.shouldEqual(123))
+      describe(() => 123, it => it.equals(123))
     }
 
     assertParses(spec, {
       descriptions: [
         {
           factory: () => 123,
-          assertions: [it => it.shouldEqual(123)]
+          assertions: [it => it.equals(123)]
         }
       ]
     })
@@ -28,7 +28,7 @@ describe('parseSpec', () => {
 
   it('parses a named description', () => {
     const spec = describe => {
-      describe('one two three', () => 123, it => it.shouldEqual(123))
+      describe('one two three', () => 123, it => it.equals(123))
     }
 
     assertParses(spec, {
@@ -36,7 +36,7 @@ describe('parseSpec', () => {
         {
           name: 'one two three',
           factory: () => 123,
-          assertions: [it => it.shouldEqual(123)]
+          assertions: [it => it.equals(123)]
         }
       ]
     })
@@ -47,7 +47,7 @@ describe('parseSpec', () => {
       describe('veg',
         describe(
           () => 'carrot',
-          it => it.shouldEqual('carrot')
+          it => it.equals('carrot')
         )
       )
     }
@@ -60,7 +60,7 @@ describe('parseSpec', () => {
             {
               factory: () => 'carrot',
               assertions: [
-                it => it.shouldEqual('carrot')
+                it => it.equals('carrot')
               ]
             }
           ]
@@ -74,7 +74,7 @@ describe('parseSpec', () => {
       describe('fruit',
         describe('citrus',
           () => 'orange',
-          it => it.shouldEqual('orange')
+          it => it.equals('orange')
         )
       )
     }
@@ -88,7 +88,7 @@ describe('parseSpec', () => {
               name: 'citrus',
               factory: () => 'orange',
               assertions: [
-                it => it.shouldEqual('orange')
+                it => it.equals('orange')
               ]
             }
           ]
@@ -99,20 +99,20 @@ describe('parseSpec', () => {
 
   it('parses many descriptions', () => {
     const spec = describe => {
-      describe(() => 55, it => it.shouldEqual(55))
-      describe('sixty six', () => 66, it => it.shouldEqual(66))
+      describe(() => 55, it => it.equals(55))
+      describe('sixty six', () => 66, it => it.equals(66))
     }
 
     assertParses(spec, {
       descriptions: [
         {
           factory: () => 55,
-          assertions: [it => it.shouldEqual(55)]
+          assertions: [it => it.equals(55)]
         },
         {
           name: 'sixty six',
           factory: () => 66,
-          assertions: [it => it.shouldEqual(66)]
+          assertions: [it => it.equals(66)]
         }
       ]
     })
@@ -122,12 +122,12 @@ describe('parseSpec', () => {
     const spec = describe => {
       describe(
         () => 101,
-        it => it.shouldEqual(101),
+        it => it.equals(101),
         describe(
           () => 202,
-          it => it.shouldEqual(202)
+          it => it.equals(202)
         ),
-        it => it.shouldEqual(100 + 1)
+        it => it.equals(100 + 1)
       )
     }
 
@@ -136,14 +136,14 @@ describe('parseSpec', () => {
         {
           factory: () => 101,
           assertions: [
-            it => it.shouldEqual(101),
+            it => it.equals(101),
             {
               factory: () => 202,
               assertions: [
-                it => it.shouldEqual(202)
+                it => it.equals(202)
               ]
             },
-            it => it.shouldEqual(100 + 1)
+            it => it.equals(100 + 1)
           ]
         }
       ]
