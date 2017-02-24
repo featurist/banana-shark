@@ -1,5 +1,5 @@
 const assert = require('assert')
-const Broadcaster = require('../broadcaster')
+const Broadcaster = require('../lib/broadcaster')
 
 describe('Broadcaster', function () {
   [

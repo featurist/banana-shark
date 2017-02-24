@@ -1,5 +1,5 @@
 const assert = require('assert')
-const Parser = require('../parser')
+const Parser = require('..').Parser
 const stringify = require('./support/stringify')
 
 describe('Parser', () => {

@@ -1,5 +1,5 @@
 const assert = require('assert')
-const Suite = require('../suite')
+const Suite = require('..').Suite
 const stringify = require('./support/stringify')
 const Listener = require('./support/listener')
 

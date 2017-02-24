@@ -1,8 +1,7 @@
-const Parser = require('./parser')
-const Suite = require('./suite')
-const Broadcaster = require('./broadcaster')
-const PrettyFormatter = require('./prettyFormatter')
-const Exiter = require('./exiter')
+const { Parser, Suite } = require('.')
+const Broadcaster = require('./lib/broadcaster')
+const PrettyFormatter = require('./lib/prettyFormatter')
+const Exiter = require('./lib/exiter')
 const path = require('path')
 
 class Cli {
