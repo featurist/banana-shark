@@ -21,7 +21,7 @@ module.exports = describe => {
   describe(
     'one hundred and twenty three',              // name (optional)
     () => 123,                                   // factory
-    it => it.equals(123),                   // assertion
+    it => it.equals(123),                        // assertion
     it => it("is less than 200", n => n < 200)   // assertion
   )
 
