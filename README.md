@@ -168,7 +168,7 @@ module.exports = describe => {
 
 ## Design
 
-## Strictly Synchronous Tests
+## Strictly Synchronous
 
 Asynchronous tests are difficult to express and reason about and have the
 inherent potential to run slowly and non-deterministically. Synchronous tests
@@ -203,7 +203,7 @@ describe(() => new Dog(immediateTimeout),
 })
 ```
 
-## No Nested Function Scopes
+## No Nested Functions
 
 Unlike other testing tools that support nested contexts, `describe` blocks in
 banana-shark are not expressed as functions themselves. In other words,
@@ -211,7 +211,7 @@ banana-shark are not expressed as functions themselves. In other words,
 difference means tests are less likely to access shared state and can therefore
 be executed concurrently.
 
-## Reusable contexts
+## Reusable Contexts
 
 `behaves like` is a key concept in banana-shark, allowing specs to be composed
 of reusable blocks that build on previous blocks. This is effectively like
