@@ -35,7 +35,7 @@ PrettyFormatter.prototype.specEnded = function () {
 
 PrettyFormatter.prototype.suiteEnded = function () {
   this.writeLine('')
-  const summary = []
+  var summary = []
   if (this.passCount > 0) summary.push(`${this.passCount} passed`)
   if (this.errors.length > 0) summary.push(`${this.errors.length} failed`)
   this.writeLine(summary.join(', '))

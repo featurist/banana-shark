@@ -1,4 +1,4 @@
 module.exports = {
-  parseSpec: require('./parseSpec'),
+  Parser: require('./parser'),
   Suite: require('./suite')
 }

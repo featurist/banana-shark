@@ -1,4 +1,4 @@
-const parseSpec = require('./parseSpec')
+const Parser = require('./parser')
 const Suite = require('./suite')
 const Broadcaster = require('./broadcaster')
 const PrettyFormatter = require('./prettyFormatter')
@@ -18,7 +18,7 @@ class Cli {
     return Promise.all(args.map(filePath => {
       try {
         const fullPath = path.join(process.cwd(), filePath)
-        const spec = parseSpec(require(fullPath))
+        const spec = new Parser().parse(require(fullPath))
         spec.path = fullPath
         suite.specs.push(spec)
         return Promise.resolve()

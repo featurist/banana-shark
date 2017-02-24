@@ -1,9 +1,9 @@
 const assert = require('assert')
 const Listener = require('./support/listener')
 const stringify = require('./support/stringify')
-const { parseSpec, Suite } = require('..')
+const { Parser, Suite } = require('..')
 
-describe('Running parsed specs', () => {
+describe('Running specs', () => {
 
   const run = suite => {
     const listener = new Listener()
@@ -24,7 +24,8 @@ describe('Running parsed specs', () => {
   }
 
   it('runs multiple specs with various nesting', () => {
-    const spec1 = parseSpec(describe => {
+    const parser = new Parser()
+    const spec1 = parser.parse(describe => {
       describe(
         () => 123,
         it => it.equals(123),
@@ -34,7 +35,7 @@ describe('Running parsed specs', () => {
         )
       )
     })
-    const spec2 = parseSpec(describe => {
+    const spec2 = parser.parse(describe => {
       describe(
         () => 666,
         it => it.equals(999)

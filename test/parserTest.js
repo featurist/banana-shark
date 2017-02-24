@@ -1,11 +1,11 @@
 const assert = require('assert')
-const parseSpec = require('../parseSpec')
+const Parser = require('../parser')
 const stringify = require('./support/stringify')
 
-describe('parseSpec', () => {
+describe('Parser', () => {
 
   const assertParses = (spec, expectedParseResult) => {
-    const actualParseResult = parseSpec(spec)
+    const actualParseResult = new Parser().parse(spec)
     stringify.functionsIn(expectedParseResult)
     stringify.functionsIn(actualParseResult)
     assert.deepEqual(actualParseResult, expectedParseResult)
