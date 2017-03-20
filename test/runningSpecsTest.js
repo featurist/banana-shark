@@ -1,7 +1,7 @@
 const assert = require('assert')
 const Listener = require('./support/listener')
 const stringify = require('./support/stringify')
-const { Parser, Suite } = require('..')
+const { Parser, Suite, expandSuite } = require('..')
 
 describe('Running specs', () => {
 
@@ -23,7 +23,7 @@ describe('Running specs', () => {
     assert.deepEqual(actualEvents, expectedEvents)
   }
 
-  it('runs multiple specs with various nesting', () => {
+  it('runs multiple specs with nesting and abstracts', () => {
     const parser = new Parser()
     const spec1 = parser.parse(describe => {
       describe(
@@ -38,17 +38,27 @@ describe('Running specs', () => {
     const spec2 = parser.parse(describe => {
       describe(
         () => 666,
-        it => it.equals(999)
+        it => it.equals(999),
+        'six six seven minus one'
+      )
+
+      describe(
+        'six six seven minus one',
+        it => it.equals(667 - 1)
       )
     })
     const suite = { specs: [spec1, spec2] }
+    const expandedSuite = expandSuite(suite)
+    const [expandedSpec1, expandedSpec2] = expandedSuite.specs
     const events = run(suite)
-    const description1 = spec1.descriptions[0]
-    const description2 = spec1.descriptions[0].assertions[1]
+    const description1 = expandedSpec1.descriptions[0]
+    const description2 = expandedSpec1.descriptions[0].assertions[1]
     const assertion1 = description1.assertions[0]
     const assertion2 = description2.assertions[0]
-    const description3 = spec2.descriptions[0]
-    const assertion3 = spec2.descriptions[0].assertions[0]
+    const description3 = expandedSpec2.descriptions[0]
+    const assertion3 = expandedSpec2.descriptions[0].assertions[0]
+    const description4 = expandedSpec2.descriptions[0].assertions[1]
+    const assertion4 = expandedSpec2.descriptions[0].assertions[1].assertions[0]
 
     const error1 = {
       actual: 666,
@@ -60,8 +70,8 @@ describe('Running specs', () => {
     }
 
     assertEvents(events, [
-      { type: 'suiteStarted', suite },
-      { type: 'specStarted', spec: spec1 },
+      { type: 'suiteStarted', suite: expandedSuite },
+      { type: 'specStarted', spec: expandedSpec1 },
       { type: 'descriptionStarted', description: description1 },
       { type: 'assertionStarted', assertion: assertion1 },
       { type: 'assertionPassed', assertion: assertion1 },
@@ -70,14 +80,18 @@ describe('Running specs', () => {
       { type: 'assertionPassed', assertion: assertion2 },
       { type: 'descriptionEnded', description: description2 },
       { type: 'descriptionEnded', description: description1 },
-      { type: 'specEnded', spec: spec1 },
-      { type: 'specStarted', spec: spec2 },
+      { type: 'specEnded', spec: expandedSpec1 },
+      { type: 'specStarted', spec: expandedSpec2 },
       { type: 'descriptionStarted', description: description3 },
       { type: 'assertionStarted', assertion: assertion3 },
       { type: 'assertionFailed', assertion: assertion3, error: error1 },
+      { type: 'descriptionStarted', description: description4 },
+      { type: 'assertionStarted', assertion: assertion4 },
+      { type: 'assertionPassed', assertion: assertion4 },
+      { type: 'descriptionEnded', description: description4 },
       { type: 'descriptionEnded', description: description3 },
-      { type: 'specEnded', spec: spec2 },
-      { type: 'suiteEnded', suite }
+      { type: 'specEnded', spec: expandedSpec2 },
+      { type: 'suiteEnded', suite: expandedSuite }
     ])
   })
 

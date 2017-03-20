@@ -42,6 +42,55 @@ describe('Parser', () => {
     })
   })
 
+  it('parses an abstract description', () => {
+    const spec = describe => {
+      describe('one two three', it => it.equals(123))
+    }
+
+    assertParses(spec, {
+      descriptions: [
+        {
+          name: 'one two three',
+          assertions: [it => it.equals(123)]
+        }
+      ]
+    })
+  })
+
+  it('parses an abstract assertion', () => {
+    const spec = describe => {
+      describe('one two three', () => 123, it => it.equals(123), 'a number')
+    }
+
+    assertParses(spec, {
+      descriptions: [
+        {
+          name: 'one two three',
+          factory: () => 123,
+          assertions: [it => it.equals(123), 'a number']
+        }
+      ]
+    })
+  })
+
+  it('parses an abstract description with abstract assertions', () => {
+    const spec = describe => {
+      describe(
+        'the meaning of life',
+        'fourty three minus one'
+      )
+    }
+
+    assertParses(spec, {
+      descriptions: [
+        {
+          name: 'the meaning of life',
+          assertions: ['fourty three minus one']
+        }
+      ]
+    })
+  })
+
   it('parses a nested anonymous description', () => {
     const spec = describe => {
       describe('veg',

@@ -19,28 +19,19 @@ function with one `describe` parameter:
 module.exports = describe => {
 
   describe(
-    'one hundred and twenty three',              // name (optional)
-    () => 123,                                   // factory
-    it => it.equals(123),                        // assertion
-    it => it("is less than 200", n => n < 200)   // assertion
+    'one hundred and twenty three',  // name (optional)
+    () => 123,                       // factory
+    it => it.equals(123)             // assertion
   )
 
 }
 ```
 
-`describe` takes an optional name as its first argument, followed by a mandatory
-factory function, followed by any number of either assertions that operate on
-the result of the factory function, or nested describe blocks.
+`describe` takes an optional name as its first argument, followed by a factory
+function that creates a _subject_, followed by any number of assertions against
+the subject, or nested describe blocks.
 
-`it` takes the name of an assertion, followed by a function that is passed
-the result of the factory or mutation:
-
-```js
-describe(
-  () => new Duck(),
-  it => it('quacks', duck => assert.equals('quack!', duck.saySomething()))
-)
-```
+`it` is used to express assertions about the subject
 
 The assertion should throw an error when it fails. If it uses any asynchronous
 code, then it will also fail. There are ways round this. Don't use them.
@@ -64,9 +55,8 @@ commonly-used assertions:
 
 ## Nested Contexts
 
-Nested `describe` blocks take a _mutation_ instead of a factory as their first
-argument, which is passed the result of the outer block's factory or mutation,
-for example:
+Nested `describe` blocks take a _mutating_ factory as their first argument,
+which is passed the outer block's subject, for example:
 
 ```js
 describe(
@@ -83,7 +73,7 @@ describe(
 )
 ```
 
-## Example
+## Complete Example
 
 ```js
 module.exports = describe => {
@@ -91,36 +81,36 @@ module.exports = describe => {
   describe(
     'an empty array',
     () => [],
-    it => it('behaves like an empty stack'),
+    'an empty stack',
     describe('after pushing undefined',
       stack => { stack.push(undefined); return stack },
-      it => it('behaves like a stack with a single undefined item')
+      'a stack with a single undefined item'
     ),
     describe('after pushing 66',
       stack => { stack.push(66); return stack },
-      it => it('behaves like a stack where the only pushed item was 66')
+      'a stack where the only pushed item was 66'
     )
   )
 
   describe(
     'an array with a single undefined item',
     () => [undefined],
-    it('behaves like a stack with a single undefined item'),
+    'a stack with a single undefined item',
     describe('after pushing 66',
       stack => { stack.push(66); return stack },
-      it => it('behaves like a stack where the last pushed item was 66')
+      'a stack where the last pushed item was 66'
     )
   )
 
-  describe('behaves like a stack with a single undefined item',
-    it => it('can push an item'),
-    it => it('behaves like a stack with one item'),
-    it => it('pops undefined')
+  describe('a stack with a single undefined item',
+    'can push an item',
+    'a stack with one item',
+    'pops undefined'
   )
 
-  describe('behaves like an empty stack',
-    it => it('can push an item'),
-    it => it('returns undefined when popped'),
+  describe('an empty stack',
+    'can push an item',
+    'returns undefined when popped',
     describe('has length 1', it => it.has('length').that.equals(1))
   )
 
@@ -131,7 +121,7 @@ module.exports = describe => {
     ),
     describe('after pushing 66',
       stack => { stack.push(66); return stack },
-      it => it('behaves like a stack where the last pushed item was 66')
+      'a stack where the last pushed item was 66'
     )
   )
 
@@ -140,22 +130,22 @@ module.exports = describe => {
     it => it.equals(undefined)
   )
 
-  describe('behaves like a stack with one item',
+  describe('a stack with one item',
     describe('has length 1', it => it.has('length').that.equals(1)),
     describe('after calling .pop()',
       stack => { stack.pop(); return stack },
-      it => it('behaves like an empty stack')
+      'an empty stack'
     )
   )
 
-  describe('behaves like a stack where the only pushed item was 66',
-    it => it('behaves like a stack with one item'),
-    it => it('can push an item'),
-    it => it('behaves like a stack where the last pushed item was 66'),
+  describe('a stack where the only pushed item was 66',
+    'behaves like a stack with one item',
+    'can push an item',
+    'a stack where the last pushed item was 66',
     describe('has length 1', it => it.has('length').that.equals(1))
   )
 
-  describe('behaves like a stack where the last pushed item was 66',
+  describe('a stack where the last pushed item was 66',
     describe('has length > 0', it => it.has('length').that.isGreaterThan(0)),
     describe('when calling .pop()',
       stack => stack.pop(),
@@ -178,30 +168,7 @@ are cheaper to create and maintain than asynchronous tests.
 
 Just because your code is asynchronous it doesn't mean your tests have to be.
 You just need to avoid depending on global implementations of asynchronous
-constructs, and use synchronous equivalents in tests. For example:
-
-```js
-class Dog {
-  constructor(setTimeout) {
-    this.setTimeout = setTimeout
-  }
-
-  saySomething: function(listener) {
-    this.setTimeout(() => listener.hear("woof!"), 1000)
-  }
-}
-
-const immediateTimeout = callback => callback()
-
-describe(() => new Dog(immediateTimeout),  
-  describe("eventually .saySomething() says", dog => {
-    let said
-    dog.saySomething({ hear: sound => said = sound })
-    return said
-  },
-  it => it.equals("woof!"))
-})
-```
+constructs, and use synchronous equivalents in tests.
 
 ### No Nested Functions
 
@@ -215,7 +182,7 @@ be executed concurrently.
 
 `behaves like` is a key concept in banana-shark, allowing specs to be composed
 of reusable blocks that build on previous blocks. This is effectively like
-a quick way of defining custom assertions that only apply in a specific scope:
+a quick way of defining custom assertions. For example:
 
 ```js
 describe(
@@ -234,13 +201,16 @@ describe(
 ```js
 describe(
   () => new Man(),
-  it => it('is legged')
+  'is legged'
 )
 
 describe(
   () => new Woman(),
-  it => it('is legged')
+  'is legged'
 )
 
-describe('is legged', it => it.has('legs'))
+describe(
+  'is legged',
+  it => it.has('legs')
+)
 ```
