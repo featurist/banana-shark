@@ -44,6 +44,7 @@ describe('Running specs', () => {
 
       describe(
         'six six seven minus one',
+        number => number,
         it => it.equals(667 - 1)
       )
     })

@@ -44,13 +44,14 @@ describe('Parser', () => {
 
   it('parses an abstract description', () => {
     const spec = describe => {
-      describe('one two three', it => it.equals(123))
+      describe('one two three', x => x, it => it.equals(123))
     }
 
     assertParses(spec, {
       descriptions: [
         {
           name: 'one two three',
+          factory: x => x,
           assertions: [it => it.equals(123)]
         }
       ]

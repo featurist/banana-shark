@@ -127,11 +127,13 @@ Feature: Running Specs
 
         describe(
           'the meaning of life',
+          number => number,
           it => it.equals(42)
         )
 
         describe(
           'fourty three minus one',
+          number => number,
           it => it.equals(43 - 1)
         )
 
@@ -164,6 +166,7 @@ Feature: Running Specs
 
         describe(
           'fourty three minus one',
+          number => number,
           it => it.equals(43 - 1)
         )
 
