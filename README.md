@@ -81,6 +81,10 @@ module.exports = describe => {
   describe(
     () => [],
     'is like an empty stack',
+    describe('pushing an item',
+      stack => stack.push('whatever'),
+      it => it.equals(1)
+    ),
     describe('after pushing undefined',
       stack => { stack.push(undefined); return stack },
       'is like a stack with a single undefined item'
@@ -111,7 +115,7 @@ module.exports = describe => {
     'is like an empty stack',
     'can push an item',
     'returns undefined when popped',
-    'has length 0'
+    'has no items'
   )
 
   describe(
@@ -135,11 +139,19 @@ module.exports = describe => {
 
   describe(
     'is like a stack with one item',
-    'has length 1',
+    'has one item',
     describe(
-      'after calling .pop()',
+      'after popping an item',
       stack => { stack.pop(); return stack },
       'is like an empty stack'
+    ),
+    describe('pushing another item',
+      stack => stack.push(11),
+      it => it.equals(2)
+    ),
+    describe('after pushing another item',
+      stack => { stack.push(77); return stack },
+      it => it.has('length').that.equals(2)
     )
   )
 
@@ -148,36 +160,88 @@ module.exports = describe => {
     'is like a stack with one item',
     'can push an item',
     'is like a stack whose last pushed item was 66',
-    'has length 1'
+    'has one item'
   )
 
   describe(
     'is like a stack whose last pushed item was 66',
     describe(
-      'has length > 0',
+      'has more than zero items',
       stack => stack,
       it => it.has('length').that.isGreaterThan(0)
     ),
     describe(
-      'when calling .pop()',
       stack => stack.pop(),
       it => it.equals(66)
     )
   )
 
   describe(
-    'has length 0',
+    'has no items',
     stack => stack,
     it => it.has('length').that.equals(0)
   )
 
   describe(
-    'has length 1',
+    'has one item',
     stack => stack,
     it => it.has('length').that.equals(1)
   )
 
 }
+```
+
+Running `bs` against this spec generates the following output:
+
+```
+✔ () => [], is like an empty stack, can push an item, stack => stack.push(77), it => it.isGreaterThan(0)
+✔ () => [], is like an empty stack, can push an item, after pushing 66, is like a stack whose last pushed item was 66, has more than zero items, it => it.has('length').that.isGreaterThan(0)
+✔ () => [], is like an empty stack, can push an item, after pushing 66, is like a stack whose last pushed item was 66, stack => stack.pop(), it => it.equals(66)
+✔ () => [], is like an empty stack, returns undefined when popped, it => it.equals(undefined)
+✔ () => [], is like an empty stack, has no items, it => it.has('length').that.equals(0)
+✔ () => [], pushing an item, it => it.equals(1)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, can push an item, stack => stack.push(77), it => it.isGreaterThan(0)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, can push an item, after pushing 66, is like a stack whose last pushed item was 66, has more than zero items, it => it.has('length').that.isGreaterThan(0)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, can push an item, after pushing 66, is like a stack whose last pushed item was 66, stack => stack.pop(), it => it.equals(66)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, is like a stack with one item, has one item, it => it.has('length').that.equals(1)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, can push an item, stack => stack.push(77), it => it.isGreaterThan(0)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, can push an item, after pushing 66, is like a stack whose last pushed item was 66, has more than zero items, it => it.has('length').that.isGreaterThan(0)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, can push an item, after pushing 66, is like a stack whose last pushed item was 66, stack => stack.pop(), it => it.equals(66)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, returns undefined when popped, it => it.equals(undefined)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, has no items, it => it.has('length').that.equals(0)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, is like a stack with one item, pushing another item, it => it.equals(2)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, is like a stack with one item, after pushing another item, it => it.has('length').that.equals(2)
+✔ () => [], after pushing undefined, is like a stack with a single undefined item, returns undefined when popped, it => it.equals(undefined)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack with one item, has one item, it => it.has('length').that.equals(1)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack with one item, after popping an item, is like an empty stack, can push an item, stack => stack.push(77), it => it.isGreaterThan(0)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack with one item, after popping an item, is like an empty stack, can push an item, after pushing 66, is like a stack whose last pushed item was 66, has more than zero items, it => it.has('length').that.isGreaterThan(0)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack with one item, after popping an item, is like an empty stack, can push an item, after pushing 66, is like a stack whose last pushed item was 66, stack => stack.pop(), it => it.equals(66)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack with one item, after popping an item, is like an empty stack, returns undefined when popped, it => it.equals(undefined)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack with one item, after popping an item, is like an empty stack, has no items, it => it.has('length').that.equals(0)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack with one item, pushing another item, it => it.equals(2)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack with one item, after pushing another item, it => it.has('length').that.equals(2)
+✔ () => [], after pushing 66, is like a stack with only 66, can push an item, stack => stack.push(77), it => it.isGreaterThan(0)
+✔ () => [], after pushing 66, is like a stack with only 66, can push an item, after pushing 66, is like a stack whose last pushed item was 66, has more than zero items, it => it.has('length').that.isGreaterThan(0)
+✔ () => [], after pushing 66, is like a stack with only 66, can push an item, after pushing 66, is like a stack whose last pushed item was 66, stack => stack.pop(), it => it.equals(66)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack whose last pushed item was 66, has more than zero items, it => it.has('length').that.isGreaterThan(0)
+✔ () => [], after pushing 66, is like a stack with only 66, is like a stack whose last pushed item was 66, stack => stack.pop(), it => it.equals(66)
+✔ () => [], after pushing 66, is like a stack with only 66, has one item, it => it.has('length').that.equals(1)
+✔ () => [undefined], is like a stack with a single undefined item, can push an item, stack => stack.push(77), it => it.isGreaterThan(0)
+✔ () => [undefined], is like a stack with a single undefined item, can push an item, after pushing 66, is like a stack whose last pushed item was 66, has more than zero items, it => it.has('length').that.isGreaterThan(0)
+✔ () => [undefined], is like a stack with a single undefined item, can push an item, after pushing 66, is like a stack whose last pushed item was 66, stack => stack.pop(), it => it.equals(66)
+✔ () => [undefined], is like a stack with a single undefined item, is like a stack with one item, has one item, it => it.has('length').that.equals(1)
+✔ () => [undefined], is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, can push an item, stack => stack.push(77), it => it.isGreaterThan(0)
+✔ () => [undefined], is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, can push an item, after pushing 66, is like a stack whose last pushed item was 66, has more than zero items, it => it.has('length').that.isGreaterThan(0)
+✔ () => [undefined], is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, can push an item, after pushing 66, is like a stack whose last pushed item was 66, stack => stack.pop(), it => it.equals(66)
+✔ () => [undefined], is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, returns undefined when popped, it => it.equals(undefined)
+✔ () => [undefined], is like a stack with a single undefined item, is like a stack with one item, after popping an item, is like an empty stack, has no items, it => it.has('length').that.equals(0)
+✔ () => [undefined], is like a stack with a single undefined item, is like a stack with one item, pushing another item, it => it.equals(2)
+✔ () => [undefined], is like a stack with a single undefined item, is like a stack with one item, after pushing another item, it => it.has('length').that.equals(2)
+✔ () => [undefined], is like a stack with a single undefined item, returns undefined when popped, it => it.equals(undefined)
+✔ () => [undefined], after pushing 66, is like a stack whose last pushed item was 66, has more than zero items, it => it.has('length').that.isGreaterThan(0)
+✔ () => [undefined], after pushing 66, is like a stack whose last pushed item was 66, stack => stack.pop(), it => it.equals(66)
+
+46 passed
 ```
 
 ## Design
