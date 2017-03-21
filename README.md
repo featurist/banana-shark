@@ -80,9 +80,29 @@ module.exports = describe => {
 
   describe(
     () => [],
+    'is like an empty stack'
+  )
+
+  describe(
+    () => [undefined],
+    'is like a stack with a single undefined item'
+  )
+
+  describe(
+    () => [66],
+    'is like a stack with only 66'
+  )
+
+  describe(
+    'is like a stack with only 66',
+    'is like a stack with one item',
+    'is like a stack whose last pushed item was 66'
+  )
+
+  describe(
     'is like an empty stack',
     describe('pushing an item',
-      stack => stack.push('whatever'),
+      stack => stack.push('another'),
       it => it.equals(1)
     ),
     describe('after pushing undefined',
@@ -92,30 +112,18 @@ module.exports = describe => {
     describe('after pushing 66',
       stack => { stack.push(66); return stack },
       'is like a stack with only 66'
-    )
-  )
-
-  describe(
-    () => [undefined],
-    'is like a stack with a single undefined item',
-    describe('after pushing 66',
-      stack => { stack.push(66); return stack },
-      'is like a stack whose last pushed item was 66'
-    )
-  )
-
-  describe(
-    'is like a stack with a single undefined item',
-    'can push an item',
-    'is like a stack with one item',
+    ),
     'returns undefined when popped'
   )
 
   describe(
-    'is like an empty stack',
-    'can push an item',
-    'returns undefined when popped',
-    'has no items'
+    'is like a stack with a single undefined item',
+    'is like a stack with one item',
+    'returns undefined when popped'
+    describe('after pushing 66',
+      stack => { stack.push(66); return stack },
+      'is like a stack whose last pushed item was 66'
+    )
   )
 
   describe(
@@ -153,14 +161,6 @@ module.exports = describe => {
       stack => { stack.push(77); return stack },
       it => it.has('length').that.equals(2)
     )
-  )
-
-  describe(
-    'is like a stack with only 66',
-    'is like a stack with one item',
-    'can push an item',
-    'is like a stack whose last pushed item was 66',
-    'has one item'
   )
 
   describe(
@@ -300,5 +300,62 @@ describe(
 describe(
   'is legged',
   it => it.has('legs')
+)
+```
+
+
+## Mocha like-for-like examples
+
+```js
+// mocha
+var assert = require('assert');
+describe('Array', function() {
+  describe('#indexOf()', function() {
+    it('should return -1 when the value is not present', function() {
+      assert.equal(-1, [1,2,3].indexOf(4));
+    })
+  })
+})
+
+// banana-shark
+describe('Array',
+  describe('#indexOf()',
+    describe(
+      'should return -1 when the value is not present',
+      () => [1,2,3].indexOf(4),
+      it => it.equals(-1)
+    )
+  )
+)
+
+// mocha
+describe('add()', function() {
+  var tests = [
+    {args: [1, 2],       expected: 3},
+    {args: [1, 2, 3],    expected: 6},
+    {args: [1, 2, 3, 4], expected: 10}
+  ];
+
+  tests.forEach(function(test) {
+    it('correctly adds ' + test.args.length + ' args', function() {
+      var res = add.apply(null, test.args);
+      assert.equal(res, test.expected);
+    })
+  })
+})
+
+// banana-shark
+describe('add()',
+  ...
+  [
+    {args: [1, 2],       expected: 3},
+    {args: [1, 2, 3],    expected: 6},
+    {args: [1, 2, 3, 4], expected: 10}
+  ].map(
+    test => describe('correctly adds ' + test.args.length + ' args',
+      () => add(...test.args),
+      it => it.equals(test.expected)
+    )
+  )
 )
 ```
