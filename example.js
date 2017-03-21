@@ -2,35 +2,35 @@ module.exports = describe => {
 
   describe(
     () => [],
-    'an empty stack',
+    'is like an empty stack',
     describe('after pushing undefined',
       stack => { stack.push(undefined); return stack },
-      'with a single undefined item'
+      'is like a stack with a single undefined item'
     ),
     describe('after pushing 66',
       stack => { stack.push(66); return stack },
-      'only pushed item was 66'
+      'is like a stack with only 66'
     )
   )
 
   describe(
     () => [undefined],
-    'with a single undefined item',
+    'is like a stack with a single undefined item',
     describe('after pushing 66',
       stack => { stack.push(66); return stack },
-      'last pushed item was 66'
+      'is like a stack whose last pushed item was 66'
     )
   )
 
   describe(
-    'with a single undefined item',
+    'is like a stack with a single undefined item',
     'can push an item',
-    'with one item',
+    'is like a stack with one item',
     'returns undefined when popped'
   )
 
   describe(
-    'an empty stack',
+    'is like an empty stack',
     'can push an item',
     'returns undefined when popped',
     'has length 0'
@@ -45,7 +45,7 @@ module.exports = describe => {
     describe(
       'after pushing 66',
       stack => { stack.push(66); return stack },
-      'last pushed item was 66'
+      'is like a stack whose last pushed item was 66'
     )
   )
 
@@ -56,24 +56,25 @@ module.exports = describe => {
   )
 
   describe(
-    'with one item',
+    'is like a stack with one item',
     'has length 1',
     describe(
       'after calling .pop()',
       stack => { stack.pop(); return stack },
-      'an empty stack'
+      'is like an empty stack'
     )
   )
 
   describe(
-    'only pushed item was 66',
-    'with one item',
+    'is like a stack with only 66',
+    'is like a stack with one item',
     'can push an item',
-    'last pushed item was 66',
+    'is like a stack whose last pushed item was 66',
     'has length 1'
   )
 
-  describe('last pushed item was 66',
+  describe(
+    'is like a stack whose last pushed item was 66',
     describe(
       'has length > 0',
       stack => stack,
