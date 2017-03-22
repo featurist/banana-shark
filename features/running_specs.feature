@@ -130,30 +130,25 @@ Feature: Running Specs
       """
       module.exports = describe => {
 
-        describe(
-          () => 42,
-          'the meaning of life',
-          'equals fourty three minus one'
+        describe('User',
+          () => new User('bob'),
+          'behaves like a user'
         )
 
-        describe(
-          'the meaning of life',
-          number => number,
-          it => it.equals(42),
-          'can be converted to a string'
+        describe('Admin',
+          () => new Admin('bob'),
+          'behaves like a user'
         )
 
-        describe(
-          'equals fourty three minus one',
-          number => number,
-          it => it.equals(43 - 1)
+        describe('behaves like a user',
+          describe(
+            user => user.name,
+            it => it.equals('bob')
+          )
         )
 
-        describe(
-          'can be converted to a string',
-          number => number.toString(),
-          it => it.equals('42')
-        )
+        function User(name) { this.name = name }
+        var Admin = User
 
       }
       """
@@ -161,16 +156,18 @@ Feature: Running Specs
     Then it should exit with code 0
     And the output should be:
       """
-      () => 42
-        the meaning of life
-          ✔ it => it.equals(42)
-          can be converted to a string
-            number => number.toString()
-              ✔ it => it.equals('42')
-        equals fourty three minus one
-          ✔ it => it.equals(43 - 1)
+      User
+        () => new User('bob')
+          behaves like a user
+            user => user.name
+              ✔ it => it.equals('bob')
+      Admin
+        () => new Admin('bob')
+          behaves like a user
+            user => user.name
+              ✔ it => it.equals('bob')
 
-      3 passed
+      2 passed
       """
 
   Scenario: Behaves-like behaves-like specs
