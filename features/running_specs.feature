@@ -15,7 +15,8 @@ Feature: Running Specs
     Then it should exit with code 0
     And the output should be:
       """
-      ✔ () => 123, it => it.equals(123)
+      () => 123
+        ✔ it => it.equals(123)
 
       1 passed
       """
@@ -35,13 +36,15 @@ Feature: Running Specs
     Then it should exit with code 1
     And the output should be:
       """
-      ✖ () => 666, it => it.equals(777)
+      () => 666
+        ✖ it => it.equals(777)
 
       1 failed
 
-      ✖ () => 666, it => it.equals(777)
-        AssertionError: 666 == 777
-        at spec/singleFailing.js:5:14
+      () => 666
+        ✖ it => it.equals(777)
+      AssertionError: 666 == 777
+      at spec/singleFailing.js:5:14
       """
 
   Scenario: Passing and failing
@@ -60,20 +63,26 @@ Feature: Running Specs
     Then it should exit with code 1
     And the output should be:
       """
-      ✔ () => 1, it => it.equals(1)
-      ✔ () => 2, it => it.equals(2)
-      ✖ () => 3, it => it.equals(4)
-      ✖ () => 5, it => it.equals(6)
+      () => 1
+        ✔ it => it.equals(1)
+      () => 2
+        ✔ it => it.equals(2)
+      () => 3
+        ✖ it => it.equals(4)
+      () => 5
+        ✖ it => it.equals(6)
 
       2 passed, 2 failed
 
-      ✖ () => 3, it => it.equals(4)
-        AssertionError: 3 == 4
-        at spec/passingAndFailing.js:5:30
+      () => 3
+        ✖ it => it.equals(4)
+      AssertionError: 3 == 4
+      at spec/passingAndFailing.js:5:30
 
-      ✖ () => 5, it => it.equals(6)
-        AssertionError: 5 == 6
-        at spec/passingAndFailing.js:6:30
+      () => 5
+        ✖ it => it.equals(6)
+      AssertionError: 5 == 6
+      at spec/passingAndFailing.js:6:30
       """
 
   Scenario: Running a single spec with a syntax error
@@ -109,7 +118,9 @@ Feature: Running Specs
     Then it should exit with code 0
     And the output should be:
       """
-      ✔ () => 665, n => n + 1, it => it.equals(666)
+      () => 665
+        n => n + 1
+          ✔ it => it.equals(666)
 
       1 passed
       """
@@ -122,19 +133,26 @@ Feature: Running Specs
         describe(
           () => 42,
           'the meaning of life',
-          'fourty three minus one'
+          'equals fourty three minus one'
         )
 
         describe(
           'the meaning of life',
           number => number,
-          it => it.equals(42)
+          it => it.equals(42),
+          'can be converted to a string'
         )
 
         describe(
-          'fourty three minus one',
+          'equals fourty three minus one',
           number => number,
           it => it.equals(43 - 1)
+        )
+
+        describe(
+          'can be converted to a string',
+          number => number.toString(),
+          it => it.equals('42')
         )
 
       }
@@ -143,10 +161,16 @@ Feature: Running Specs
     Then it should exit with code 0
     And the output should be:
       """
-      ✔ () => 42, the meaning of life, it => it.equals(42)
-      ✔ () => 42, fourty three minus one, it => it.equals(43 - 1)
+      () => 42
+        the meaning of life
+          ✔ it => it.equals(42)
+          can be converted to a string
+            number => number.toString()
+              ✔ it => it.equals('42')
+        equals fourty three minus one
+          ✔ it => it.equals(43 - 1)
 
-      2 passed
+      3 passed
       """
 
   Scenario: Behaves-like behaves-like specs
@@ -176,7 +200,10 @@ Feature: Running Specs
     Then it should exit with code 0
     And the output should be:
       """
-      ✔ () => 42, the meaning of life, fourty three minus one, it => it.equals(43 - 1)
+      () => 42
+        the meaning of life
+          fourty three minus one
+            ✔ it => it.equals(43 - 1)
 
       1 passed
       """
@@ -197,10 +224,14 @@ Feature: Running Specs
     Then it should exit with code 1
     And the output should be:
       """
-      ✖ () => 42, the meaning of life, it => it.isPending(assertion)
+      () => 42
+        the meaning of life
+          ✖ it => it.isPending(assertion)
 
       1 failed
 
-      ✖ () => 42, the meaning of life, it => it.isPending(assertion)
-        Pending: the meaning of life
+      () => 42
+        the meaning of life
+          ✖ it => it.isPending(assertion)
+      Pending: the meaning of life
       """

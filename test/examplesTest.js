@@ -1,5 +1,4 @@
 const Broadcaster = require('../lib/broadcaster')
-const PrettyFormatter = require('../lib/prettyFormatter')
 
 function runExample (name) {
   const thrower = {
@@ -7,12 +6,7 @@ function runExample (name) {
       throw new Error(assertion.describe())
     }
   }
-  const listener = new Broadcaster([
-    new PrettyFormatter({
-      write () { console.log.apply(null, [].slice.apply(arguments)) }
-    }),
-    thrower
-  ])
+  const listener = new Broadcaster([thrower])
   return require('../cli').runWithListener(
     ['./examples/' + name + '.js'],
     listener
