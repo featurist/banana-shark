@@ -417,7 +417,7 @@ describe(
 ```
 
 
-## Mocha like-for-like examples
+## Mocha like-for-like example
 
 ```js
 // mocha
@@ -440,35 +440,6 @@ describe('Array',
     )
   )
 )
-
-// mocha
-describe('add()', function() {
-  var tests = [
-    {args: [1, 2],       expected: 3},
-    {args: [1, 2, 3],    expected: 6},
-    {args: [1, 2, 3, 4], expected: 10}
-  ];
-
-  tests.forEach(function(test) {
-    it('correctly adds ' + test.args.length + ' args', function() {
-      var res = add.apply(null, test.args);
-      assert.equal(res, test.expected);
-    })
-  })
-})
-
-// banana-shark
-describe('add()',
-  ...
-  [
-    {args: [1, 2],       expected: 3},
-    {args: [1, 2, 3],    expected: 6},
-    {args: [1, 2, 3, 4], expected: 10}
-  ].map(
-    test => describe('correctly adds ' + test.args.length + ' args',
-      () => add(...test.args),
-      it => it.equals(test.expected)
-    )
-  )
-)
 ```
+
+More mocha like-for-like examples can be found under [examples](./examples)

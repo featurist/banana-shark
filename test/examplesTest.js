@@ -19,8 +19,16 @@ describe('examples', function () {
     return runExample('stack')
   })
 
-  it('runs the mocha examples', function () {
-    return runExample('mocha')
+  it('runs the mocha-basic example', function () {
+    return runExample('mocha-basic')
+  })
+
+  it('runs the mocha-generating example', function () {
+    return runExample('mocha-generating')
+  })
+
+  it('runs the mocha-shared example', function () {
+    return runExample('mocha-shared')
   })
 
   if (typeof window !== 'undefined') {

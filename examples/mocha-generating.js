@@ -1,14 +1,6 @@
-module.exports = describe => {
+https://mochajs.org/#dynamically-generating-tests
 
-  describe('Array',
-    describe('#indexOf()',
-      describe(
-        'should return -1 when the value is not present',
-        () => [1, 2, 3].indexOf(4),
-        it => it.equals(-1)
-      )
-    )
-  )
+module.exports = describe => {
 
   describe('add()',
     ...
