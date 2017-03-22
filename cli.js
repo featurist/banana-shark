@@ -13,6 +13,10 @@ class Cli {
       new Exiter()
     ])
     const args = argv.slice(2)
+    this.runWithListener(args, listener)
+  }
+
+  runWithListener (args, listener) {
     const suite = { specs: [] }
     return Promise.all(args.map(filePath => {
       try {

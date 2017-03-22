@@ -1,13 +1,13 @@
 {
   "name": "banana-shark",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "bin": {
     "bs": "./bin/bs.js"
   },
   "scripts": {
-    "test": "mocha && cucumber-js",
+    "test": "mocha && electron-mocha && cucumber-js",
     "eslint": "eslint **/*.js",
     "eslint-fix": "eslint **/*.js --fix"
   },
@@ -15,10 +15,13 @@
   "license": "ISC",
   "devDependencies": {
     "cucumber": "^2.0.0-rc.6",
+    "electron": "^1.6.2",
+    "electron-mocha": "^3.4.0",
     "eslint": "^3.13.1",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
+    "finished-promise": "0.0.2",
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0"
   }
