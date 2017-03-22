@@ -31,7 +31,8 @@ function weatherApp () {
   return new WeatherAppAutomator({ element })
 }
 
-// the class under test represents a web app
+// the class under test represents a web app. It talks asynchonously to a
+// service, then updates a DOM element, depending on the outcome
 class WeatherApp {
   constructor ({ element, weatherService }) {
     this.element = element
@@ -49,7 +50,7 @@ class WeatherApp {
   }
 }
 
-// builders are useful for building up nested contexts
+// builders are useful for building up nested contexts in declarative tests
 class Builder {
   constructor (options) {
     this.options = options
@@ -62,8 +63,8 @@ class Builder {
 }
 
 // automating a web app in a specific context means first building up the
-// context (some service is online/offline) then interacting with the app
-// in different ways (visit the weather forecast)
+// context (e.g. some service is online/offline) then interacting with the app
+// in different ways (e.g. visit the weather forecast)
 class WeatherAppAutomator extends Builder {
   constructor (options) {
     super()
