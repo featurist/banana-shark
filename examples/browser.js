@@ -64,7 +64,8 @@ class Builder {
 
 // automating a web app in a specific context means first building up the
 // context (e.g. some service is online/offline) then interacting with the app
-// in different ways (e.g. visit the weather forecast)
+// in different ways (e.g. visit the weather forecast) and observing its final
+// state (in this case element.innerText)
 class WeatherAppAutomator extends Builder {
   constructor (options) {
     super()
