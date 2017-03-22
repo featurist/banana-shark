@@ -23,7 +23,10 @@ module.exports = describe => {
   )
 }
 
-// a utility function to create an element and mount an app with an "automator"
+// Tests usually communicate with the app via some automation API (e.g. selenium/browser-monkey).
+// From the perspective of the tests, this externally-facing UI _is_ "the app". So this utility
+// creates an element and passes that element to an "automator" which will eventually instantiate
+// the app with the element as an argument
 function weatherApp () {
   const element = document.createElement('div')
   element.className = 'weather-app'
