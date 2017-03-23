@@ -8,7 +8,10 @@ module.exports = describe => {
 
       describe(
         app => app.visitWeatherForecast(),
-        it => it.equals('Please try again later')
+        describe('shows a service unavailable warning',
+          app => app.visibleMessage,
+          it => it.equals('Please try again later')
+        )
       )
     ),
 
@@ -17,21 +20,25 @@ module.exports = describe => {
 
       describe(
         app => app.visitWeatherForecast(),
-        it => it.equals('The weather forecast')
+        describe('shows the weather forecast returned by the service',
+          app => app.visibleMessage,
+          it => it.equals('The weather forecast')
+        )
       )
     )
   )
 }
 
-// Tests usually communicate with the app via some automation API (e.g. selenium/browser-monkey).
-// From the perspective of the tests, this externally-facing UI _is_ "the app". So this utility
-// creates an element and passes that element to an "automator" which will eventually instantiate
+// High-level tests communicate with the app under test via some driver
+// (e.g. selenium/browser-monkey). From the perspective of the tests, this
+// the driver is "the app". So this utility creates an element and passes that
+// element to an app-specific "driver" which will eventually instantiate
 // the app with the element as an argument
 function weatherApp () {
   const element = document.createElement('div')
   element.className = 'weather-app'
   document.body.appendChild(element)
-  return new WeatherAppAutomator({ element })
+  return new WeatherAppDriver({ element })
 }
 
 // the class under test represents a web app. It talks asynchonously to a
@@ -65,11 +72,11 @@ class Builder {
   }
 }
 
-// automating a web app in a specific context means first building up the
+// Driving a web app in a specific context means first building up the
 // context (e.g. some service is online/offline) then interacting with the app
-// in different ways (e.g. visit the weather forecast) and observing its final
-// state (in this case element.innerText)
-class WeatherAppAutomator extends Builder {
+// in different ways (e.g. visit the weather forecast) and then finally
+// asserting about its final state (in this case element.innerText)
+class WeatherAppDriver extends Builder {
   constructor (options) {
     super()
     this.app = new WeatherApp(options)
@@ -85,6 +92,9 @@ class WeatherAppAutomator extends Builder {
 
   visitWeatherForecast () {
     this.app.showWeatherForecast()
+  }
+
+  get visibleMessage () {
     return this.element.innerText
   }
 }
@@ -92,7 +102,6 @@ class WeatherAppAutomator extends Builder {
 // Use stubs to represent the interactions with external dependencies. Using
 // FinishedPromise instead of Promise means we can keep our tests synchronous,
 // while our application code is asynchronous
-
 const FinishedPromise = require('finished-promise')
 
 class OfflineWeatherService {
