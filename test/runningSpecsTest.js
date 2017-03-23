@@ -1,7 +1,7 @@
 const assert = require('assert')
 const Listener = require('./support/listener')
 const stringify = require('./support/stringify')
-const { Parser, Suite, expandSuite } = require('..')
+const { Parser, Suite } = require('..')
 
 describe('Running specs', () => {
 
@@ -49,8 +49,8 @@ describe('Running specs', () => {
       )
     })
     const suite = { specs: [spec1, spec2] }
-    const expandedSuite = expandSuite(suite)
-    const [expandedSpec1, expandedSpec2] = expandedSuite.specs
+    Suite.expand(suite)
+    const [expandedSpec1, expandedSpec2] = suite.specs
     const events = run(suite)
     const description1 = expandedSpec1.descriptions[0]
     const description2 = expandedSpec1.descriptions[0].assertions[1]
@@ -71,7 +71,7 @@ describe('Running specs', () => {
     }
 
     assertEvents(events, [
-      { type: 'suiteStarted', suite: expandedSuite },
+      { type: 'suiteStarted', suite: suite },
       { type: 'specStarted', spec: expandedSpec1 },
       { type: 'descriptionStarted', description: description1 },
       { type: 'assertionStarted', assertion: assertion1 },
@@ -92,7 +92,7 @@ describe('Running specs', () => {
       { type: 'descriptionEnded', description: description4 },
       { type: 'descriptionEnded', description: description3 },
       { type: 'specEnded', spec: expandedSpec2 },
-      { type: 'suiteEnded', suite: expandedSuite }
+      { type: 'suiteEnded', suite: suite }
     ])
   })
 
