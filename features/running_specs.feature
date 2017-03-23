@@ -158,7 +158,7 @@ Feature: Running Specs
       function omg () { return wtf() }
       var zomg = require('./zomg')
       """
-    Given the file "spec/zomg.js" contains:
+    And the file "spec/zomg.js" contains:
       """
       module.exports = () => wtf
       """
@@ -193,6 +193,67 @@ Feature: Running Specs
       ReferenceError: wtf is not defined
         at spec/zomg.js:1:86
         at spec/referenceErrorInFactory.js:11:11
+      """
+
+  Scenario: Running a single nested passing spec
+    Given the file "spec/singleNested.js" contains:
+      """
+      module.exports = describe =>
+
+        describe(
+          () => 665,
+          describe(
+            n => n + 1,
+            it => it.equals(666)
+          )
+        )
+
+      """
+    When I run "bs spec/singleNested.js"
+    Then it should exit with code 0
+    And the output should be:
+      """
+      () => 665
+        n => n + 1
+          ✔ it => it.equals(666)
+
+      1 passed
+      """
+
+  Scenario: Running a single spec with a literal equals assertion
+    Given the file "spec/numberAsAssertion.js" contains:
+      """
+      module.exports = describe => {
+        describe(
+          () => fizzbuzz(),
+          describe(
+            'prints 100 lines',
+            lines => lines.length,
+            100
+          )
+        )
+      }
+
+      function fizzbuzz () {
+        return []
+      }
+      """
+    When I run "bs spec/numberAsAssertion.js"
+    Then it should exit with code 1
+    And the output should be:
+      """
+      () => fizzbuzz()
+        prints 100 lines
+          lines => lines.length
+            ✖ 100
+
+      1 failed
+
+      () => fizzbuzz()
+        prints 100 lines
+          lines => lines.length
+            ✖ 100
+      AssertionError: 0 == 100
       """
 
   Scenario: Running a single nested passing spec
