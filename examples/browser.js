@@ -31,9 +31,9 @@ module.exports = describe => {
 
 // High-level tests communicate with the app under test via some driver
 // (e.g. selenium/browser-monkey). From the perspective of the tests, this
-// the driver is "the app". So this utility creates an element and passes that
-// element to an app-specific "driver" which will eventually instantiate
-// the app with the element as an argument
+// driver represents "the app". So this utility creates an element and passes
+// it to an app-specific "driver" which will eventually instantiate the app
+// with the element as an argument
 function weatherApp () {
   const element = document.createElement('div')
   element.className = 'weather-app'
@@ -72,10 +72,10 @@ class Builder {
   }
 }
 
-// Driving a web app in a specific context means first building up the
-// context (e.g. some service is online/offline) then interacting with the app
-// in different ways (e.g. visit the weather forecast) and then finally
-// asserting about its final state (in this case element.innerText)
+// Driving a web app in a specific context means:
+// 1. building up the context (e.g. some service is online/offline)
+// 2. interacting with the app (e.g. visit the weather forecast)
+// 3. asserting about its final state (e.g. get the visible message)
 class WeatherAppDriver extends Builder {
   constructor (options) {
     super()
@@ -99,9 +99,9 @@ class WeatherAppDriver extends Builder {
   }
 }
 
-// Use stubs to represent the interactions with external dependencies. Using
+// Use fakes to represent the interactions with external dependencies. Using
 // FinishedPromise instead of Promise means we can keep our tests synchronous,
-// while our application code is asynchronous
+// while our application code is asynchronous (using real Promises)
 const FinishedPromise = require('finished-promise')
 
 class StubWeatherService {
