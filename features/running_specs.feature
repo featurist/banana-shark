@@ -77,7 +77,7 @@ Feature: Running Specs
       () => 666
         ✖ it => it.equals(777)
       AssertionError: 666 == 777
-      at spec/singleFailing.js:5:14
+        at spec/singleFailing.js:5:14
       """
 
   Scenario: Passing and failing
@@ -110,12 +110,12 @@ Feature: Running Specs
       () => 3
         ✖ it => it.equals(4)
       AssertionError: 3 == 4
-      at spec/passingAndFailing.js:5:30
+        at spec/passingAndFailing.js:5:30
 
       () => 5
         ✖ it => it.equals(6)
       AssertionError: 5 == 6
-      at spec/passingAndFailing.js:6:30
+        at spec/passingAndFailing.js:6:30
       """
 
   Scenario: Running a single spec with a syntax error
@@ -131,6 +131,68 @@ Feature: Running Specs
       });
         ^
       SyntaxError: Unexpected end of input
+      """
+
+  Scenario: Running a single spec with a reference error in the factory
+    Given the file "spec/referenceErrorInFactory.js" contains:
+      """
+      module.exports = describe => {
+        describe(
+          () => wtf(),
+          it => it.equals(99)
+        )
+        describe(
+          () => omg(),
+          it => it.equals(99)
+        )
+        describe(
+          () => zomg(),
+          it => it.equals(99)
+        )
+        describe(
+          () => 99,
+          it => it.equals(99)
+        )
+      }
+
+      function omg () { return wtf() }
+      var zomg = require('./zomg')
+      """
+    Given the file "spec/zomg.js" contains:
+      """
+      module.exports = () => wtf
+      """
+    When I run "bs spec/referenceErrorInFactory.js"
+    Then it should exit with code 1
+    And the output should be:
+      """
+      () => wtf()
+        ✖ it => it.equals(99)
+      () => omg()
+        ✖ it => it.equals(99)
+      () => zomg()
+        ✖ it => it.equals(99)
+      () => 99
+        ✔ it => it.equals(99)
+
+      1 passed, 3 failed
+
+      () => wtf()
+        ✖ it => it.equals(99)
+      ReferenceError: wtf is not defined
+        at spec/referenceErrorInFactory.js:3:11
+
+      () => omg()
+        ✖ it => it.equals(99)
+      ReferenceError: wtf is not defined
+        at spec/referenceErrorInFactory.js:20:26
+        at spec/referenceErrorInFactory.js:7:11
+
+      () => zomg()
+        ✖ it => it.equals(99)
+      ReferenceError: wtf is not defined
+        at spec/zomg.js:1:86
+        at spec/referenceErrorInFactory.js:11:11
       """
 
   Scenario: Running a single nested passing spec

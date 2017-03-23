@@ -1,4 +1,5 @@
 const stringifyFunctionsIn = result => {
+  delete result.shortStack
   switch (typeof result) {
     case 'function':
       return result.toString()
