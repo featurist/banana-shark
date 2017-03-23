@@ -88,7 +88,7 @@ Scenario: it.equals(value)
 
       () => 123
         ✖ it => it.isGreaterThan(123)
-      AssertionError: false == true
+      AssertionError: 123 > 123
         at spec/isGreaterThan.js:6:14
       """
 
@@ -116,7 +116,7 @@ Scenario: it.equals(value)
 
       () => 123
         ✖ it => it.isLessThan(123)
-      AssertionError: false == true
+      AssertionError: 123 < 123
         at spec/isLessThan.js:6:14
       """
 
@@ -175,7 +175,7 @@ Scenario: it.equals(value)
 
       () => ({ foo: 1 })
         ✖ it => it.has('bar')
-      AssertionError: false == true
+      AssertionError: Expected property 'bar'
         at spec/hasProperty.js:6:14
       """
 
@@ -203,7 +203,7 @@ Scenario: it.equals(value)
 
       () => ({ foo: 1 })
         ✖ it => it.has('foo').that.isGreaterThan(1)
-      AssertionError: false == true
+      AssertionError: 1 > 1
         at spec/hasPropertyThat.js:6:30
       """
 
@@ -253,6 +253,6 @@ Scenario: it.equals(value)
 
       () => () => { throw new TypeError('oops') }
         ✖ it => it.throws(ReferenceError)
-      AssertionError: Expected ReferenceError
+      AssertionError: Expected ReferenceError, but TypeError was thrown
         at spec/itThrows.js:12:14
       """
