@@ -3,7 +3,6 @@ const fs = require('fs')
 const exec = require('child_process').exec
 const mkdirp = require('mkdirp')
 const path = require('path')
-const assert = require('assert')
 
 class TempFileSystem {
   getDirectory () {

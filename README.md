@@ -7,9 +7,6 @@ A JavaScript unit test runner designed to be:
 * fast
 * global-free
 
-banana-shark does evil things like monkey-patching global `setTimeout` to avoid
-any possibility of asynchronous behaviour.
-
 ## Declaring Tests
 
 banana-shark tests are expressed as JavaScript modules that export a single
@@ -39,19 +36,18 @@ Any factory or mutation using asynchronous code is also considered to fail.
 
 ## Assertions
 
-`it` provides access to a number of convenience methods to generate
-commonly-used assertions:
+`it` provides assertions:
 
 * `it.equals(expectedValue)`
 * `it.deeplyEquals(expectedValue)`
-* `it.throws([expectedError])`
-* `it.doesNotThrow()`
-* `it.has(propertyName)`
 * `it.isGreaterThan(expectedValue)`
 * `it.isLessThan(expectedValue)`
-* `it.has(propertyName, expectedValue)`
+* `it.has(propertyName)`
 * `it.has(propertyName).that.equals(expectedValue)`
 * `it.has(propertyName).that.deeplyEquals(expectedValue)`
+* `it.throws()`
+* `it.throws(expectedErrorType)`
+* `it.throws(expectedErrorType, expectedErrorMessage)`
 
 ## Nested Contexts
 
@@ -415,7 +411,6 @@ describe(
   it => it.has('legs')
 )
 ```
-
 
 ## Mocha like-for-like example
 

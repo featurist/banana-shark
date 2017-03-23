@@ -21,6 +21,39 @@ Feature: Running Specs
       1 passed
       """
 
+  Scenario: Running multiple passing specs
+    Given the file "spec/multiplePassing1.js" contains:
+      """
+      module.exports = describe =>
+
+        describe(
+          () => 'one',
+          it => it.equals('one')
+        )
+
+      """
+    And the file "spec/multiplePassing2.js" contains:
+      """
+      module.exports = describe =>
+
+        describe(
+          () => 'two',
+          it => it.equals('two')
+        )
+
+      """
+    When I run "bs spec/multiplePassing1.js spec/multiplePassing2.js"
+    Then it should exit with code 0
+    And the output should be:
+      """
+      () => 'one'
+        ✔ it => it.equals('one')
+      () => 'two'
+        ✔ it => it.equals('two')
+
+      2 passed
+      """
+
   Scenario: Running a single failing spec
     Given the file "spec/singleFailing.js" contains:
       """
