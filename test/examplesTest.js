@@ -31,6 +31,10 @@ describe('examples', function () {
     return runExample('mocha-shared')
   })
 
+  it('runs the fizzbuzz example', function () {
+    return runExample('tdd/fizzbuzz/fizzbuzz-11')
+  })
+
   if (typeof window !== 'undefined') {
     it('runs the browser example', function () {
       return runExample('browser')
