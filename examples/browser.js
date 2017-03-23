@@ -4,18 +4,6 @@ module.exports = describe => {
     () => weatherApp(),
 
     describe(
-      app => app.whenTheWeatherServiceIsOffline(),
-
-      describe(
-        app => app.visitWeatherForecast(),
-        describe('shows a service unavailable warning',
-          app => app.visibleMessage,
-          it => it.equals('Please try again later')
-        )
-      )
-    ),
-
-    describe(
       app => app.whenTheWeatherServiceIsOnline(),
 
       describe(
@@ -23,6 +11,18 @@ module.exports = describe => {
         describe('shows the weather forecast returned by the service',
           app => app.visibleMessage,
           it => it.equals('The weather forecast')
+        )
+      )
+    ),
+
+    describe(
+      app => app.whenTheWeatherServiceIsOffline(),
+
+      describe(
+        app => app.visitWeatherForecast(),
+        describe('shows a service unavailable warning',
+          app => app.visibleMessage,
+          it => it.equals('Please try again later')
         )
       )
     )
@@ -104,14 +104,14 @@ class WeatherAppDriver extends Builder {
 // while our application code is asynchronous
 const FinishedPromise = require('finished-promise')
 
-class OfflineWeatherService {
-  forecast () {
-    return FinishedPromise.reject(new Error('Connection is offline'))
-  }
-}
-
 class StubWeatherService {
   forecast () {
     return FinishedPromise.resolve('The weather forecast')
+  }
+}
+
+class OfflineWeatherService {
+  forecast () {
+    return FinishedPromise.reject(new Error('Connection is offline'))
   }
 }
