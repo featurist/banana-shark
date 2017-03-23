@@ -51,4 +51,5 @@ function Admin (first, last) {
   this.admin = true
 }
 
+/* eslint no-proto: "off" */
 Admin.prototype.__proto__ = User.prototype
