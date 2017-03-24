@@ -47,9 +47,9 @@ the subject, or nested describe blocks.
 
 ## Changing the subject in nested contexts
 
-Nested `describe` blocks take a another factory as their first argument, which
-_changes the subject_ by doing something to the result of the outer block's
-subject, for example:
+Nested `describe` blocks take a another factory (after an optional string name),
+which _changes the subject_ by _doing something to the result_ of the outer
+block's subject, for example:
 
 ```js
 describe(
