@@ -106,7 +106,7 @@ describe.aspect(
 )
 ```
 
-## Using describe.after for
+## Using describe.after to continue asserting on the same subject
 
 Sometimes you need to assert about the same subject after performing some
 action on it. `describe.after` allows you to express this without awkward return
