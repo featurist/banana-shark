@@ -8,14 +8,14 @@ module.exports = describe => {
       stack => stack.push('whatever'),
       it => it.equals(1)
     ),
-    describe(
-      'after pushing undefined',
-      stack => { stack.push(undefined); return stack },
+    describe.after(
+      'pushing undefined',
+      stack => stack.push(undefined),
       'is like a stack with a single undefined item'
     ),
-    describe(
-      'after pushing 66',
-      stack => { stack.push(66); return stack },
+    describe.after(
+      'pushing 66',
+      stack => stack.push(66),
       'is like a stack with only 66'
     )
   )
@@ -23,9 +23,9 @@ module.exports = describe => {
   describe(
     () => [undefined],
     'is like a stack with a single undefined item',
-    describe(
-      'after pushing 66',
-      stack => { stack.push(66); return stack },
+    describe.after(
+      'pushing 66',
+      stack => stack.push(66),
       'is like a stack whose last pushed item was 66'
     )
   )
@@ -51,9 +51,9 @@ module.exports = describe => {
       stack => stack.push(-1),
       it => it.isGreaterThan(0)
     ),
-    describe(
-      'after pushing 66',
-      stack => { stack.push(66); return stack },
+    describe.after(
+      'pushing 66',
+      stack => stack.push(66),
       'is like a stack whose last pushed item was 66'
     )
   )
@@ -69,9 +69,9 @@ module.exports = describe => {
   describe.aspect(
     'is like a stack with one item',
     'has one item',
-    describe(
-      'after popping an item',
-      stack => { stack.pop(); return stack },
+    describe.after(
+      'popping an item',
+      stack => stack.pop(),
       'is like an empty stack'
     ),
     describe(
@@ -79,9 +79,9 @@ module.exports = describe => {
       stack => stack.push(11),
       it => it.equals(2)
     ),
-    describe(
-      'after pushing another item',
-      stack => { stack.push(77); return stack },
+    describe.after(
+      'pushing another item',
+      stack => stack.push(77),
       it => it.has('length').that.equals(2)
     )
   )

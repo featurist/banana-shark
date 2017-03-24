@@ -42,6 +42,35 @@ describe('Parser', () => {
     })
   })
 
+  it('parses after blocks', () => {
+    const spec = describe => {
+      describe(
+        () => [],
+        describe.after(
+          array => array.push(666),
+          it => it.deeplyEquals([666])
+        )
+      )
+    }
+
+    assertParses(spec, {
+      descriptions: [
+        {
+          factory: () => [],
+          assertions: [
+            {
+              factory: array => array.push(666),
+              after: true,
+              assertions: [
+                it => it.deeplyEquals([666])
+              ]
+            }
+          ]
+        }
+      ]
+    })
+  })
+
   it('parses an aspect', () => {
     const spec = describe => {
       describe.aspect(

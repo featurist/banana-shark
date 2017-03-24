@@ -69,7 +69,7 @@ describe(
 )
 ```
 
-## Sharing assertions with aspects
+## Using describe.aspect to share assertions
 
 `aspects` are _abstract_ specs, in the sense that they have no factories, but
 only consist of assertions. Aspects allow specs to be composed of reusable
@@ -106,7 +106,38 @@ describe.aspect(
 )
 ```
 
-## Complete Example
+## Using describe.after for
+
+Sometimes you need to assert about the same subject after performing some
+action on it. `describe.after` allows you to express this without awkward return
+statements. For example:
+
+```js
+describe(
+  () => [],
+  describe.after(
+    array => array.push(123),
+    it => it.deeplyEquals([123])
+  )
+)
+```
+
+...is equivalent to:
+
+```js
+describe(
+  () => [],
+  describe(
+    array => {
+      array.push(123)
+      return array
+    },
+    it => it.deeplyEquals([123])
+  )
+)
+```
+
+## Putting it together
 
 ```js
 module.exports = describe => {
@@ -119,14 +150,14 @@ module.exports = describe => {
       stack => stack.push('whatever'),
       it => it.equals(1)
     ),
-    describe(
-      'after pushing undefined',
-      stack => { stack.push(undefined); return stack },
+    describe.after(
+      'pushing undefined',
+      stack => stack.push(undefined),
       'is like a stack with a single undefined item'
     ),
-    describe(
-      'after pushing 66',
-      stack => { stack.push(66); return stack },
+    describe.after(
+      'pushing 66',
+      stack => stack.push(66),
       'is like a stack with only 66'
     )
   )
@@ -134,9 +165,9 @@ module.exports = describe => {
   describe(
     () => [undefined],
     'is like a stack with a single undefined item',
-    describe(
-      'after pushing 66',
-      stack => { stack.push(66); return stack },
+    describe.after(
+      'pushing 66',
+      stack => stack.push(66),
       'is like a stack whose last pushed item was 66'
     )
   )
@@ -162,9 +193,9 @@ module.exports = describe => {
       stack => stack.push(-1),
       it => it.isGreaterThan(0)
     ),
-    describe(
-      'after pushing 66',
-      stack => { stack.push(66); return stack },
+    describe.after(
+      'pushing 66',
+      stack => stack.push(66),
       'is like a stack whose last pushed item was 66'
     )
   )
@@ -180,9 +211,9 @@ module.exports = describe => {
   describe.aspect(
     'is like a stack with one item',
     'has one item',
-    describe(
-      'after popping an item',
-      stack => { stack.pop(); return stack },
+    describe.after(
+      'popping an item',
+      stack => stack.pop(),
       'is like an empty stack'
     ),
     describe(
@@ -190,9 +221,9 @@ module.exports = describe => {
       stack => stack.push(11),
       it => it.equals(2)
     ),
-    describe(
-      'after pushing another item',
-      stack => { stack.push(77); return stack },
+    describe.after(
+      'pushing another item',
+      stack => stack.push(77),
       it => it.has('length').that.equals(2)
     )
   )
@@ -241,8 +272,8 @@ Running `bs` against this spec generates the following output:
       the result of pushing an item
         stack => stack.push(-1)
           ✔ it => it.isGreaterThan(0)
-      after pushing 66
-        stack => { stack.push(66); return stack }
+      pushing 66
+        after: stack => stack.push(66)
           is like a stack whose last pushed item was 66
             has more than zero items
               ✔ it => it.has('length').that.isGreaterThan(0)
@@ -256,15 +287,15 @@ Running `bs` against this spec generates the following output:
   pushing an item
     stack => stack.push('whatever')
       ✔ it => it.equals(1)
-  after pushing undefined
-    stack => { stack.push(undefined); return stack }
+  pushing undefined
+    after: stack => stack.push(undefined)
       is like a stack with a single undefined item
         can push an item
           the result of pushing an item
             stack => stack.push(-1)
               ✔ it => it.isGreaterThan(0)
-          after pushing 66
-            stack => { stack.push(66); return stack }
+          pushing 66
+            after: stack => stack.push(66)
               is like a stack whose last pushed item was 66
                 has more than zero items
                   ✔ it => it.has('length').that.isGreaterThan(0)
@@ -273,15 +304,15 @@ Running `bs` against this spec generates the following output:
         is like a stack with one item
           has one item
             ✔ it => it.has('length').that.equals(1)
-          after popping an item
-            stack => { stack.pop(); return stack }
+          popping an item
+            after: stack => stack.pop()
               is like an empty stack
                 can push an item
                   the result of pushing an item
                     stack => stack.push(-1)
                       ✔ it => it.isGreaterThan(0)
-                  after pushing 66
-                    stack => { stack.push(66); return stack }
+                  pushing 66
+                    after: stack => stack.push(66)
                       is like a stack whose last pushed item was 66
                         has more than zero items
                           ✔ it => it.has('length').that.isGreaterThan(0)
@@ -295,27 +326,26 @@ Running `bs` against this spec generates the following output:
           pushing another item
             stack => stack.push(11)
               ✔ it => it.equals(2)
-          after pushing another item
-            stack => { stack.push(77); return stack }
+            after: stack => stack.push(77)
               ✔ it => it.has('length').that.equals(2)
         returns undefined when popped
           stack => stack.pop()
             ✔ it => it.equals(undefined)
-  after pushing 66
-    stack => { stack.push(66); return stack }
+  pushing 66
+    after: stack => stack.push(66)
       is like a stack with only 66
         is like a stack with one item
           has one item
             ✔ it => it.has('length').that.equals(1)
-          after popping an item
-            stack => { stack.pop(); return stack }
+          popping an item
+            after: stack => stack.pop()
               is like an empty stack
                 can push an item
                   the result of pushing an item
                     stack => stack.push(-1)
                       ✔ it => it.isGreaterThan(0)
-                  after pushing 66
-                    stack => { stack.push(66); return stack }
+                  pushing 66
+                    after: stack => stack.push(66)
                       is like a stack whose last pushed item was 66
                         has more than zero items
                           ✔ it => it.has('length').that.isGreaterThan(0)
@@ -329,15 +359,14 @@ Running `bs` against this spec generates the following output:
           pushing another item
             stack => stack.push(11)
               ✔ it => it.equals(2)
-          after pushing another item
-            stack => { stack.push(77); return stack }
+            after: stack => stack.push(77)
               ✔ it => it.has('length').that.equals(2)
         can push an item
           the result of pushing an item
             stack => stack.push(-1)
               ✔ it => it.isGreaterThan(0)
-          after pushing 66
-            stack => { stack.push(66); return stack }
+          pushing 66
+            after: stack => stack.push(66)
               is like a stack whose last pushed item was 66
                 has more than zero items
                   ✔ it => it.has('length').that.isGreaterThan(0)
@@ -356,8 +385,8 @@ Running `bs` against this spec generates the following output:
       the result of pushing an item
         stack => stack.push(-1)
           ✔ it => it.isGreaterThan(0)
-      after pushing 66
-        stack => { stack.push(66); return stack }
+      pushing 66
+        after: stack => stack.push(66)
           is like a stack whose last pushed item was 66
             has more than zero items
               ✔ it => it.has('length').that.isGreaterThan(0)
@@ -366,15 +395,15 @@ Running `bs` against this spec generates the following output:
     is like a stack with one item
       has one item
         ✔ it => it.has('length').that.equals(1)
-      after popping an item
-        stack => { stack.pop(); return stack }
+      popping an item
+        after: stack => stack.pop()
           is like an empty stack
             can push an item
               the result of pushing an item
                 stack => stack.push(-1)
                   ✔ it => it.isGreaterThan(0)
-              after pushing 66
-                stack => { stack.push(66); return stack }
+              pushing 66
+                after: stack => stack.push(66)
                   is like a stack whose last pushed item was 66
                     has more than zero items
                       ✔ it => it.has('length').that.isGreaterThan(0)
@@ -388,14 +417,13 @@ Running `bs` against this spec generates the following output:
       pushing another item
         stack => stack.push(11)
           ✔ it => it.equals(2)
-      after pushing another item
-        stack => { stack.push(77); return stack }
+        after: stack => stack.push(77)
           ✔ it => it.has('length').that.equals(2)
     returns undefined when popped
       stack => stack.pop()
         ✔ it => it.equals(undefined)
-  after pushing 66
-    stack => { stack.push(66); return stack }
+  pushing 66
+    after: stack => stack.push(66)
       is like a stack whose last pushed item was 66
         has more than zero items
           ✔ it => it.has('length').that.isGreaterThan(0)
