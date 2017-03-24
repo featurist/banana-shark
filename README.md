@@ -30,10 +30,6 @@ the subject, or nested describe blocks.
 
 `it` is used to express assertions about the subject
 
-The assertion should throw an error when it fails. If it uses any asynchronous
-code, then it will also fail. There are ways round this. Don't use them.
-Any factory or mutation using asynchronous code is also considered to fail.
-
 ## Assertions
 
 `it` provides assertions:
@@ -49,21 +45,22 @@ Any factory or mutation using asynchronous code is also considered to fail.
 * `it.throws(expectedErrorType)`
 * `it.throws(expectedErrorType, expectedErrorMessage)`
 
-## Nested Contexts
+## Changing the subject in nested contexts
 
-Nested `describe` blocks take a _mutating_ factory as their first argument,
-which is passed the outer block's subject, for example:
+Nested `describe` blocks take a another factory as their first argument, which
+_changes the subject_ by doing something to the result of the outer block's
+subject, for example:
 
 ```js
 describe(
-  () => 1,                // factory
-  it => it.equals(1),     // assertion
+  () => 1,                       // factory
+  it => it.equals(1),            // assertion
   describe(
-    x  => x + 2,          // mutation
-    it => it.equals(3),   // assertion
+    x  => x + 2,                 // factory
+    it => it.equals(3),          // assertion
     describe(
-      y  => y + 3,        // mutation
-      it => it.equals(6)  // assertion
+      x  => typeof x,            // factory
+      it => it.equals('string')  // assertion
     )
   )
 )
