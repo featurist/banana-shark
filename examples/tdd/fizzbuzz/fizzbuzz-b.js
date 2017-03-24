@@ -11,6 +11,9 @@ module.exports = describe => {
   )
 }
 
+function numbersPrintedBy (program) {}
+var fizzbuzz = {}
+
 /*
 () => numbersPrintedBy(fizzbuzz)
   ✖ it => it.has('length').that.equals(100)
@@ -19,6 +22,6 @@ module.exports = describe => {
 
 () => numbersPrintedBy(fizzbuzz)
   ✖ it => it.has('length').that.equals(100)
-ReferenceError: numbersPrintedBy is not defined
-  at examples/tdd/fizzbuzz/fizzbuzz-1.js:9:11
+TypeError: Cannot use 'in' operator to search for 'length' in undefined
+  at examples/tdd/fizzbuzz/fizzbuzz-b.js:10:1
 */

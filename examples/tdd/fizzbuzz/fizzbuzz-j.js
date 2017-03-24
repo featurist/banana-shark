@@ -19,6 +19,10 @@ module.exports = describe => {
     describe(
       numbers => numbers[4],
       it => it.equals('Buzz')
+    ),
+    describe(
+      numbers => numbers[14],
+      it => it.equals('FizzBuzz')
     )
   )
 }
@@ -32,7 +36,7 @@ function numbersPrintedBy (program) {
 var fizzbuzz = {
   printNumbersTo (printer) {
     for (var i = 1; i <= 100; i++) {
-      printer.print(i % 3 === 0 ? 'Fizz' : i)
+      printer.print(i % 3 === 0 ? 'Fizz' : i % 5 === 0 ? 'Buzz' : i)
     }
   }
 }
@@ -45,13 +49,15 @@ var fizzbuzz = {
   numbers => numbers[2]
     ✔ it => it.equals('Fizz')
   numbers => numbers[4]
-    ✖ it => it.equals('Buzz')
+    ✔ it => it.equals('Buzz')
+  numbers => numbers[14]
+    ✖ it => it.equals('FizzBuzz')
 
-3 passed, 1 failed
+4 passed, 1 failed
 
 () => numbersPrintedBy(fizzbuzz)
-  numbers => numbers[4]
-    ✖ it => it.equals('Buzz')
-AssertionError: 5 == 'Buzz'
-  at examples/tdd/fizzbuzz/fizzbuzz-8.js:21:16
+  numbers => numbers[14]
+    ✖ it => it.equals('FizzBuzz')
+AssertionError: 'Fizz' == 'FizzBuzz'
+  at examples/tdd/fizzbuzz/fizzbuzz-j.js:25:1
 */

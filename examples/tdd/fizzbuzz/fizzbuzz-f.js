@@ -11,26 +11,41 @@ module.exports = describe => {
     describe(
       numbers => numbers[0],
       it => it.equals(1)
+    ),
+    describe(
+      numbers => numbers[2],
+      it => it.equals('Fizz')
     )
   )
 }
 
 function numbersPrintedBy (program) {
-  return { length: 100 }
+  var numbers = []
+  var printer = { print (number) { numbers.push(number) } }
+  program.printNumbersTo(printer)
+  return numbers
 }
-var fizzbuzz = {}
+var fizzbuzz = {
+  printNumbersTo (printer) {
+    for (var i = 1; i <= 100; i++) {
+      printer.print(i)
+    }
+  }
+}
 
 /*
 () => numbersPrintedBy(fizzbuzz)
   ✔ it => it.has('length').that.equals(100)
   numbers => numbers[0]
-    ✖ it => it.equals(1)
+    ✔ it => it.equals(1)
+  numbers => numbers[2]
+    ✖ it => it.equals('Fizz')
 
-1 passed, 1 failed
+2 passed, 1 failed
 
 () => numbersPrintedBy(fizzbuzz)
-  numbers => numbers[0]
-    ✖ it => it.equals(1)
-AssertionError: undefined == 1
-  at examples/tdd/fizzbuzz/fizzbuzz-4.js:13:16
+  numbers => numbers[2]
+    ✖ it => it.equals('Fizz')
+AssertionError: 3 == 'Fizz'
+  at examples/tdd/fizzbuzz/fizzbuzz-f.js:17:16
 */
