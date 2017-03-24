@@ -42,25 +42,33 @@ describe('Parser', () => {
     })
   })
 
-  it('parses an abstract description', () => {
+  it('parses an aspect', () => {
     const spec = describe => {
-      describe('one two three', x => x, it => it.equals(123))
+      describe.aspect(
+        'one two three',
+        it => it.equals(123)
+      )
     }
 
     assertParses(spec, {
       descriptions: [
         {
           name: 'one two three',
-          factory: x => x,
+          aspect: true,
           assertions: [it => it.equals(123)]
         }
       ]
     })
   })
 
-  it('parses an abstract assertion', () => {
+  it('parses an aspect assertion', () => {
     const spec = describe => {
-      describe('one two three', () => 123, it => it.equals(123), 'a number')
+      describe(
+        'one two three',
+        () => 123,
+        it => it.equals(123),
+        'a number'
+      )
     }
 
     assertParses(spec, {
@@ -74,9 +82,9 @@ describe('Parser', () => {
     })
   })
 
-  it('parses an abstract description with abstract assertions', () => {
+  it('parses an aspect with aspect assertions', () => {
     const spec = describe => {
-      describe(
+      describe.aspect(
         'the meaning of life',
         'fourty three minus one'
       )
@@ -86,6 +94,7 @@ describe('Parser', () => {
       descriptions: [
         {
           name: 'the meaning of life',
+          aspect: true,
           assertions: ['fourty three minus one']
         }
       ]

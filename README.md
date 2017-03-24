@@ -69,6 +69,43 @@ describe(
 )
 ```
 
+## Sharing assertions with aspects
+
+`aspects` are _abstract_ specs, in the sense that they have no factories, but
+only consist of assertions. Aspects allow specs to be composed of reusable
+blocks, for example:
+
+```js
+describe(
+  () => new Man(),
+  it => it.has('legs')
+)
+
+describe(
+  () => new Dog(),
+  it => it.has('legs')
+)
+```
+
+...can be reduced to:
+
+```js
+describe(
+  () => new Man(),
+  'is legged'
+)
+
+describe(
+  () => new Dog(),
+  'is legged'
+)
+
+describe.aspect(
+  'is legged',
+  it => it.has('legs')
+)
+```
+
 ## Complete Example
 
 ```js
@@ -76,56 +113,53 @@ module.exports = describe => {
 
   describe(
     () => [],
-    'is like an empty stack'
+    'is like an empty stack',
+    describe(
+      'pushing an item',
+      stack => stack.push('whatever'),
+      it => it.equals(1)
+    ),
+    describe(
+      'after pushing undefined',
+      stack => { stack.push(undefined); return stack },
+      'is like a stack with a single undefined item'
+    ),
+    describe(
+      'after pushing 66',
+      stack => { stack.push(66); return stack },
+      'is like a stack with only 66'
+    )
   )
 
   describe(
     () => [undefined],
-    'is like a stack with a single undefined item'
-  )
-
-  describe(
-    () => [66],
-    'is like a stack with only 66'
-  )
-
-  describe(
-    'is like a stack with only 66',
-    'is like a stack with one item',
-    'is like a stack whose last pushed item was 66'
-  )
-
-  describe(
-    'is like an empty stack',
-    describe('pushing an item',
-      stack => stack.push('another'),
-      it => it.equals(1)
-    ),
-    describe('after pushing undefined',
-      stack => { stack.push(undefined); return stack },
-      'is like a stack with a single undefined item'
-    ),
-    describe('after pushing 66',
-      stack => { stack.push(66); return stack },
-      'is like a stack with only 66'
-    ),
-    'returns undefined when popped'
-  )
-
-  describe(
     'is like a stack with a single undefined item',
-    'is like a stack with one item',
-    'returns undefined when popped'
-    describe('after pushing 66',
+    describe(
+      'after pushing 66',
       stack => { stack.push(66); return stack },
       'is like a stack whose last pushed item was 66'
     )
   )
 
-  describe(
+  describe.aspect(
+    'is like a stack with a single undefined item',
+    'can push an item',
+    'is like a stack with one item',
+    'returns undefined when popped'
+  )
+
+  describe.aspect(
+    'is like an empty stack',
+    'can push an item',
+    'returns undefined when popped',
+    'has no items'
+  )
+
+  describe.aspect(
     'can push an item',
     describe(
-      stack => stack.push(77),
+      'the result of pushing an item',
+      stack => stack.push(-1),
       it => it.isGreaterThan(0)
     ),
     describe(
@@ -135,13 +169,15 @@ module.exports = describe => {
     )
   )
 
-  describe(
+  describe.aspect(
     'returns undefined when popped',
-    stack => stack.pop(),
-    it => it.equals(undefined)
+    describe(
+      stack => stack.pop(),
+      it => it.equals(undefined)
+    )
   )
 
-  describe(
+  describe.aspect(
     'is like a stack with one item',
     'has one item',
     describe(
@@ -149,39 +185,48 @@ module.exports = describe => {
       stack => { stack.pop(); return stack },
       'is like an empty stack'
     ),
-    describe('pushing another item',
+    describe(
+      'pushing another item',
       stack => stack.push(11),
       it => it.equals(2)
     ),
-    describe('after pushing another item',
+    describe(
+      'after pushing another item',
       stack => { stack.push(77); return stack },
       it => it.has('length').that.equals(2)
     )
   )
 
-  describe(
+  describe.aspect(
+    'is like a stack with only 66',
+    'is like a stack with one item',
+    'can push an item',
     'is like a stack whose last pushed item was 66',
-    describe(
-      'has more than zero items',
-      stack => stack,
-      it => it.has('length').that.isGreaterThan(0)
-    ),
+    'has one item'
+  )
+
+  describe.aspect(
+    'is like a stack whose last pushed item was 66',
+    'has more than zero items',
     describe(
       stack => stack.pop(),
       it => it.equals(66)
     )
   )
 
-  describe(
+  describe.aspect(
     'has no items',
-    stack => stack,
     it => it.has('length').that.equals(0)
   )
 
-  describe(
+  describe.aspect(
     'has one item',
-    stack => stack,
     it => it.has('length').that.equals(1)
+  )
+
+  describe.aspect(
+    'has more than zero items',
+    it => it.has('length').that.isGreaterThan(0)
   )
 
 }
@@ -193,8 +238,9 @@ Running `bs` against this spec generates the following output:
 () => []
   is like an empty stack
     can push an item
-      stack => stack.push(77)
-        ✔ it => it.isGreaterThan(0)
+      the result of pushing an item
+        stack => stack.push(-1)
+          ✔ it => it.isGreaterThan(0)
       after pushing 66
         stack => { stack.push(66); return stack }
           is like a stack whose last pushed item was 66
@@ -214,8 +260,9 @@ Running `bs` against this spec generates the following output:
     stack => { stack.push(undefined); return stack }
       is like a stack with a single undefined item
         can push an item
-          stack => stack.push(77)
-            ✔ it => it.isGreaterThan(0)
+          the result of pushing an item
+            stack => stack.push(-1)
+              ✔ it => it.isGreaterThan(0)
           after pushing 66
             stack => { stack.push(66); return stack }
               is like a stack whose last pushed item was 66
@@ -230,8 +277,9 @@ Running `bs` against this spec generates the following output:
             stack => { stack.pop(); return stack }
               is like an empty stack
                 can push an item
-                  stack => stack.push(77)
-                    ✔ it => it.isGreaterThan(0)
+                  the result of pushing an item
+                    stack => stack.push(-1)
+                      ✔ it => it.isGreaterThan(0)
                   after pushing 66
                     stack => { stack.push(66); return stack }
                       is like a stack whose last pushed item was 66
@@ -263,8 +311,9 @@ Running `bs` against this spec generates the following output:
             stack => { stack.pop(); return stack }
               is like an empty stack
                 can push an item
-                  stack => stack.push(77)
-                    ✔ it => it.isGreaterThan(0)
+                  the result of pushing an item
+                    stack => stack.push(-1)
+                      ✔ it => it.isGreaterThan(0)
                   after pushing 66
                     stack => { stack.push(66); return stack }
                       is like a stack whose last pushed item was 66
@@ -284,8 +333,9 @@ Running `bs` against this spec generates the following output:
             stack => { stack.push(77); return stack }
               ✔ it => it.has('length').that.equals(2)
         can push an item
-          stack => stack.push(77)
-            ✔ it => it.isGreaterThan(0)
+          the result of pushing an item
+            stack => stack.push(-1)
+              ✔ it => it.isGreaterThan(0)
           after pushing 66
             stack => { stack.push(66); return stack }
               is like a stack whose last pushed item was 66
@@ -303,8 +353,9 @@ Running `bs` against this spec generates the following output:
 () => [undefined]
   is like a stack with a single undefined item
     can push an item
-      stack => stack.push(77)
-        ✔ it => it.isGreaterThan(0)
+      the result of pushing an item
+        stack => stack.push(-1)
+          ✔ it => it.isGreaterThan(0)
       after pushing 66
         stack => { stack.push(66); return stack }
           is like a stack whose last pushed item was 66
@@ -319,8 +370,9 @@ Running `bs` against this spec generates the following output:
         stack => { stack.pop(); return stack }
           is like an empty stack
             can push an item
-              stack => stack.push(77)
-                ✔ it => it.isGreaterThan(0)
+              the result of pushing an item
+                stack => stack.push(-1)
+                  ✔ it => it.isGreaterThan(0)
               after pushing 66
                 stack => { stack.push(66); return stack }
                   is like a stack whose last pushed item was 66
@@ -374,43 +426,6 @@ banana-shark are not expressed as functions themselves. In other words,
 `describe` takes the result of `describe` as an argument. This subtle
 difference means tests are less likely to access shared state and can therefore
 be executed concurrently.
-
-### Reusable Contexts
-
-`is like` is a key concept in banana-shark, allowing specs to be composed
-of reusable blocks that build on previous blocks. This is effectively like
-a quick way of defining custom assertions. For example:
-
-```js
-describe(
-  () => new Man(),
-  it => it.has('legs')
-)
-
-describe(
-  () => new Woman(),
-  it => it.has('legs')
-)
-```
-
-...can be reduced to:
-
-```js
-describe(
-  () => new Man(),
-  'is legged'
-)
-
-describe(
-  () => new Woman(),
-  'is legged'
-)
-
-describe(
-  'is legged',
-  it => it.has('legs')
-)
-```
 
 ## Mocha like-for-like example
 
