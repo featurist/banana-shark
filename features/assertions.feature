@@ -25,7 +25,7 @@ Scenario: it.equals(value)
     () => 1
       ✖ it => it.equals(2)
     AssertionError: 1 == 2
-      at spec/equals.js:6:14
+        at it (spec/equals.js:6:14)
     """
 
   Given the file "spec/deeplyEquals.js" contains:
@@ -56,12 +56,12 @@ Scenario: it.equals(value)
     () => ({ x: 1 })
       ✖ it => it.deeplyEquals({ x: 2 })
     AssertionError: { x: 1 } deepEqual { x: 2 }
-      at spec/deeplyEquals.js:6:14
+        at it (spec/deeplyEquals.js:6:14)
 
     () => ({ x: 1 })
       ✖ it => it.deeplyEquals({ x: 1, y: 1 })
     AssertionError: { x: 1 } deepEqual { x: 1, y: 1 }
-      at spec/deeplyEquals.js:7:14
+        at it (spec/deeplyEquals.js:7:14)
     """
 
   Scenario: it.isGreaterThan(other)
@@ -89,7 +89,7 @@ Scenario: it.equals(value)
       () => 123
         ✖ it => it.isGreaterThan(123)
       AssertionError: 123 > 123
-        at spec/isGreaterThan.js:6:14
+          at it (spec/isGreaterThan.js:6:14)
       """
 
   Scenario: it.isLessThan(other)
@@ -117,7 +117,7 @@ Scenario: it.equals(value)
       () => 123
         ✖ it => it.isLessThan(123)
       AssertionError: 123 < 123
-        at spec/isLessThan.js:6:14
+          at it (spec/isLessThan.js:6:14)
       """
 
   Scenario: it.isPending(reason)
@@ -176,7 +176,7 @@ Scenario: it.equals(value)
       () => ({ foo: 1 })
         ✖ it => it.has('bar')
       AssertionError: Expected property 'bar'
-        at spec/hasProperty.js:6:14
+          at it (spec/hasProperty.js:6:14)
       """
 
   Scenario: it.has(property).that
@@ -204,7 +204,7 @@ Scenario: it.equals(value)
       () => ({ foo: 1 })
         ✖ it => it.has('foo').that.isGreaterThan(1)
       AssertionError: 1 > 1
-        at spec/hasPropertyThat.js:6:30
+          at it (spec/hasPropertyThat.js:6:30)
       """
 
   Scenario: it.throws()
@@ -244,15 +244,15 @@ Scenario: it.equals(value)
       () => () => { throw new TypeError('oops') }
         ✖ it => it.throws(TypeError, 'daisy')
       AssertionError: 'oops' == 'daisy'
-        at spec/itThrows.js:8:14
+          at it (spec/itThrows.js:8:14)
 
       () => () => { throw new TypeError('oops') }
         ✖ it => it.throws(Error, 'daisy')
       AssertionError: 'oops' == 'daisy'
-        at spec/itThrows.js:11:14
+          at it (spec/itThrows.js:11:14)
 
       () => () => { throw new TypeError('oops') }
         ✖ it => it.throws(ReferenceError)
       AssertionError: Expected ReferenceError, but TypeError was thrown
-        at spec/itThrows.js:12:14
+          at it (spec/itThrows.js:12:14)
       """

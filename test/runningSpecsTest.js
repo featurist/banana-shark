@@ -23,7 +23,7 @@ describe('Running specs', () => {
     assert.deepEqual(actualEvents, expectedEvents)
   }
 
-  it('runs multiple specs with nesting and abstracts', () => {
+  it('runs multiple specs with nesting and aspects', () => {
     const parser = new Parser()
     const spec1 = parser.parse(describe => {
       describe(
@@ -42,9 +42,8 @@ describe('Running specs', () => {
         'six six seven minus one'
       )
 
-      describe(
+      describe.aspect(
         'six six seven minus one',
-        number => number,
         it => it.equals(667 - 1)
       )
     })

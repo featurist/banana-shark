@@ -77,7 +77,7 @@ Feature: Running Specs
       () => 666
         ✖ it => it.equals(777)
       AssertionError: 666 == 777
-        at spec/singleFailing.js:5:14
+          at it (spec/singleFailing.js:5:14)
       """
 
   Scenario: Passing and failing
@@ -110,12 +110,12 @@ Feature: Running Specs
       () => 3
         ✖ it => it.equals(4)
       AssertionError: 3 == 4
-        at spec/passingAndFailing.js:5:30
+          at it (spec/passingAndFailing.js:5:30)
 
       () => 5
         ✖ it => it.equals(6)
       AssertionError: 5 == 6
-        at spec/passingAndFailing.js:6:30
+          at it (spec/passingAndFailing.js:6:30)
       """
 
   Scenario: Running a single spec with a syntax error
@@ -180,19 +180,19 @@ Feature: Running Specs
       () => wtf()
         ✖ it => it.equals(99)
       ReferenceError: wtf is not defined
-        at spec/referenceErrorInFactory.js:3:11
+          at describe (spec/referenceErrorInFactory.js:3:11)
 
       () => omg()
         ✖ it => it.equals(99)
       ReferenceError: wtf is not defined
-        at spec/referenceErrorInFactory.js:20:26
-        at spec/referenceErrorInFactory.js:7:11
+          at omg (spec/referenceErrorInFactory.js:20:26)
+          at describe (spec/referenceErrorInFactory.js:7:11)
 
       () => zomg()
         ✖ it => it.equals(99)
       ReferenceError: wtf is not defined
-        at spec/zomg.js:1:86
-        at spec/referenceErrorInFactory.js:11:11
+          at module.exports (spec/zomg.js:1:86)
+          at describe (spec/referenceErrorInFactory.js:11:11)
       """
 
   Scenario: Running a single nested passing spec

@@ -1,9 +1,14 @@
+const assert = require('assert')
 const Broadcaster = require('../lib/broadcaster')
 
 function runExample (name) {
+  const errors = []
   const thrower = {
     assertionFailed (assertion) {
-      throw new Error(assertion.describe())
+      errors.push(new Error(assertion.describe()))
+    },
+    unexpectedError (error) {
+      errors.push(error)
     }
   }
   const listener = new Broadcaster([thrower])
@@ -11,6 +16,9 @@ function runExample (name) {
     ['./examples/' + name + '.js'],
     listener
   )
+  .then(result => {
+    assert.deepEqual([], errors)
+  })
 }
 
 describe('examples', function () {
@@ -32,7 +40,7 @@ describe('examples', function () {
   })
 
   it('runs the fizzbuzz example', function () {
-    return runExample('tdd/fizzbuzz/fizzbuzz-11')
+    return runExample('tdd/fizzbuzz/fizzbuzz-k')
   })
 
   if (typeof window !== 'undefined') {

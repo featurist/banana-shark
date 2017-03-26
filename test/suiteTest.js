@@ -201,7 +201,7 @@ describe('Suite', () => {
 })
 
 describe('Suite.expand', () => {
-  it('replaces abstract assertions with nested descriptions', () => {
+  it('replaces aspect pointers with nested descriptions', () => {
     const inputSuite = {
       specs: [
         {
@@ -221,7 +221,8 @@ describe('Suite.expand', () => {
               name: 'equals 124 minus 1',
               assertions: [
                 it => it.equals(124 - 1)
-              ]
+              ],
+              aspect: true
             }
           ]
         }
@@ -237,6 +238,7 @@ describe('Suite.expand', () => {
                 it => it.equals(123),
                 {
                   name: 'equals 124 minus 1',
+                  aspect: true,
                   assertions: [
                     it => it.equals(124 - 1)
                   ]
@@ -256,7 +258,7 @@ describe('Suite.expand', () => {
     )
   })
 
-  it('replaces very abstract assertions with nested descriptions', () => {
+  it('replaces aspect pointers to aspect pointers with nested descriptions', () => {
     const inputSuite = {
       specs: [
         {
@@ -271,7 +273,8 @@ describe('Suite.expand', () => {
               name: 'equals 123 plus 1',
               assertions: [
                 it => it.equals(123 + 1)
-              ]
+              ],
+              aspect: true
             }
           ]
         },
@@ -281,7 +284,8 @@ describe('Suite.expand', () => {
               name: 'equals 124 minus 1',
               assertions: [
                 'equals 123 plus 1'
-              ]
+              ],
+              aspect: true
             }
           ]
         }
@@ -296,9 +300,11 @@ describe('Suite.expand', () => {
               assertions: [
                 {
                   name: 'equals 124 minus 1',
+                  aspect: true,
                   assertions: [
                     {
                       name: 'equals 123 plus 1',
+                      aspect: true,
                       assertions: [
                         it => it.equals(123 + 1)
                       ]

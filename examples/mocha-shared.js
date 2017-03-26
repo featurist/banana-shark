@@ -16,7 +16,8 @@ module.exports = describe => {
     )
   )
 
-  describe('behaves like a user',
+  describe.aspect('behaves like a user',
+
     describe(
       user => user.name.first,
       it => it.equals('tobi')

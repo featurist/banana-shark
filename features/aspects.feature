@@ -106,3 +106,20 @@ Feature: Aspects
           ✖ it => it.isPending(aspect)
       Pending aspect: is even
       """
+
+  Scenario: Trying to create an aspect with no name
+    Given the file "spec/anonymousAspect.js" contains:
+      """
+      module.exports = describe => {
+
+        describe.aspect(() => 666)
+
+      }
+      """
+    When I run "bs spec/anonymousAspect.js"
+    Then it should exit with code 1
+    And the output should be:
+      """
+      Error: Aspect name is required
+          at module.exports.describe (spec/anonymousAspect.js:3:12)
+      """
