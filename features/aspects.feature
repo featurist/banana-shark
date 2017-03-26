@@ -123,3 +123,20 @@ Feature: Aspects
       Error: Aspect name is required
           at module.exports.describe (spec/anonymousAspect.js:3:12)
       """
+
+  Scenario: Trying to create an aspect with a zero-argument function
+    Given the file "spec/zeroArgumentAspect.js" contains:
+      """
+      module.exports = describe => {
+
+        describe.aspect('bad aspect', () => 666)
+
+      }
+      """
+    When I run "bs spec/zeroArgumentAspect.js"
+    Then it should exit with code 1
+    And the output should be:
+      """
+      Error: Aspects take assertions (you passed a factory: () => 666)
+          at module.exports.describe (spec/zeroArgumentAspect.js:3:12)
+      """
