@@ -9,21 +9,21 @@ module.exports = describe => {
     ),
     describe(
       'when promise 1 finishes',
-      racer => racer.whenNthFinishes(1),
+      race => race.whenNthFinishes(1),
       it => it.has('result').that.equals(1),
       describe(
         'then promise 2 finishes',
-        racer => racer.whenNthFinishes(2),
+        race => race.whenNthFinishes(2),
         it => it.has('result').that.equals(1)
       )
     ),
     describe(
       'when promise 2 finishes',
-      racer => racer.whenNthFinishes(2),
+      race => race.whenNthFinishes(2),
       it => it.has('result').that.equals(2),
       describe(
         'then promise 1 finishes',
-        racer => racer.whenNthFinishes(1),
+        race => race.whenNthFinishes(1),
         it => it.has('result').that.equals(2)
       )
     )
@@ -36,21 +36,21 @@ module.exports = describe => {
     ),
     describe(
       'when promise 1 finishes',
-      racer => racer.whenNthFinishes(1),
+      race => race.whenNthFinishes(1),
       it => it.has('result').that.equals(1),
       describe(
         'then promise 2 finishes',
-        racer => racer.whenNthFinishes(2),
+        race => race.whenNthFinishes(2),
         it => it.has('result').that.equals(1)
       )
     ),
     describe(
       'when promise 2 finishes',
-      racer => racer.whenNthFinishes(2),
+      race => race.whenNthFinishes(2),
       it => it.has('error').that.has('message').that.equals('2'),
       describe(
         'then promise 1 finishes',
-        racer => racer.whenNthFinishes(1),
+        race => race.whenNthFinishes(1),
         it => it.has('error').that.has('message').that.equals('2')
       )
     )
