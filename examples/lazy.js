@@ -1,10 +1,24 @@
 module.exports = describe => {
   describe(
-    () => new Lazy()
-          .add(function timesTwo (a) { return a * 2 })
-          .add(function plus (a, b) { return a + b }, 1)
-          .evaluate([1, 2, 3]),
-    it => it.deeplyEquals([3, 5, 7])
+    () => new Lazy(),
+    describe(
+      lazy => lazy.evaluate([1, 2, 3]),
+      it => it.deeplyEquals([1, 2, 3])
+    ),
+    describe(
+      lazy => lazy.add(function timesTwo (a) { return a * 2 }),
+      describe(
+        lazy => lazy.evaluate([1, 2, 3]),
+        it => it.deeplyEquals([2, 4, 6])
+      ),
+      describe(
+        lazy => lazy.add(function plus (a, b) { return a + b }, 1),
+        describe(
+          lazy => lazy.evaluate([1, 2, 3]),
+          it => it.deeplyEquals([3, 5, 7])
+        )
+      )
+    )
   )
 }
 
