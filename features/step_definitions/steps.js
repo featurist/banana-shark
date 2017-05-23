@@ -1,38 +1,6 @@
 const { defineSupportCode } = require('cucumber')
-const fs = require('fs')
-const exec = require('child_process').exec
-const mkdirp = require('mkdirp')
-const path = require('path')
-
-class TempFileSystem {
-  getDirectory () {
-    return process.cwd() + '/tmp'
-  }
-
-  writeFile (filePath, contents) {
-    const fullPath = this.getDirectory() + '/' + filePath
-    return new Promise(function (resolve, reject) {
-      mkdirp(path.dirname(fullPath), () => {
-        fs.writeFile(fullPath, contents, err => err ? reject(err) : resolve())
-      })
-    })
-  }
-}
-
-class Shell {
-  constructor (workingDirectory) {
-    this.workingDirectory = workingDirectory
-  }
-
-  run (command) {
-    return new Promise((resolve, reject) => {
-      exec(command, { cwd: this.workingDirectory }, (error, stdout, stderr) => {
-        const exitCode = error ? 1 : 0
-        return resolve({ exitCode, stdout, stderr, error })
-      })
-    })
-  }
-}
+const TempFileSystem = require('../support/tempFileSystem')
+const Shell = require('../support/shell')
 
 defineSupportCode(function ({ Before, Given, When, Then }) {
 
