@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 const assert = require('assert')
 const Listener = require('./support/listener')
 const stringify = require('./support/stringify')

@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 const assert = require('assert')
 const Parser = require('..').Parser
 const stringify = require('./support/stringify')

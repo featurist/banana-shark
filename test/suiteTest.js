@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 const assert = require('assert')
 const Suite = require('..').Suite
 const stringify = require('./support/stringify')
