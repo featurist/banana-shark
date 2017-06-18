@@ -1,6 +1,8 @@
 # banana-shark
 
-A JavaScript unit test runner designed to be:
+A JavaScript unit test runner.
+
+Designed to be:
 
 * strictly synchronous
 * declarative
