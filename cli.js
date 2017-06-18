@@ -1,4 +1,5 @@
-const { Parser, Suite } = require('.')
+const Parser = require('./lib/parser')
+const Suite = require('./lib/suite')
 const Broadcaster = require('./lib/broadcaster')
 const PrettyFormatter = require('./lib/prettyFormatter')
 const Exiter = require('./lib/exiter')
