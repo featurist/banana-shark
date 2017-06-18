@@ -1,7 +1,7 @@
 {
   "name": "banana-shark",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
+  "description": "A JavaScript unit test runner",
   "main": "index.js",
   "bin": {
     "bs": "./bin/bs.js"
@@ -11,8 +11,8 @@
     "eslint": "eslint **/*.js",
     "eslint-fix": "eslint **/*.js --fix"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "joshski <joshuachisholm@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "cucumber": "^2.0.0-rc.6",
     "electron": "^1.6.2",
