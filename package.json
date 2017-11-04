@@ -1,6 +1,6 @@
 {
   "name": "banana-shark",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A JavaScript unit test runner",
   "main": "index.js",
   "bin": {
