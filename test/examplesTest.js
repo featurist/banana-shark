@@ -2,6 +2,7 @@
 
 const assert = require('assert')
 const Broadcaster = require('../lib/broadcaster')
+const CommandLineInterface = require('../lib/CommandLineInterface')
 
 function runExample (name) {
   const errors = []
@@ -14,7 +15,7 @@ function runExample (name) {
     }
   }
   const listener = new Broadcaster([thrower])
-  return require('../cli').runWithListener(
+  return new CommandLineInterface().runWithListener(
     ['./examples/' + name + '.js'],
     listener
   )

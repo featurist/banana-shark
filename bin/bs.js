@@ -1,3 +1,4 @@
 #!/usr/bin/env node
 
-require('../cli').run(process.argv)
+const CommandLineInterface = require('../lib/CommandLineInterface')
+new CommandLineInterface().run(process.argv)
