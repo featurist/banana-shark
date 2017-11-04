@@ -62,13 +62,11 @@ describe('Running specs', () => {
     const description4 = expandedSpec2.descriptions[0].assertions[1]
     const assertion4 = expandedSpec2.descriptions[0].assertions[1].assertions[0]
 
-    const error1 = {
-      actual: 666,
-      expected: 999,
-      generatedMessage: true,
-      message: '666 == 999',
-      name: 'AssertionError',
-      operator: '=='
+    let assertEqualsError
+    try {
+      assert.equal(666, 999)
+    } catch (e) {
+      assertEqualsError = e
     }
 
     assertEvents(events, [
@@ -86,7 +84,7 @@ describe('Running specs', () => {
       { type: 'specStarted', spec: expandedSpec2 },
       { type: 'descriptionStarted', description: description3 },
       { type: 'assertionStarted', assertion: assertion3 },
-      { type: 'assertionFailed', assertion: assertion3, error: error1 },
+      { type: 'assertionFailed', assertion: assertion3, error: assertEqualsError },
       { type: 'descriptionStarted', description: description4 },
       { type: 'assertionStarted', assertion: assertion4 },
       { type: 'assertionPassed', assertion: assertion4 },

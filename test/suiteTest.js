@@ -90,6 +90,14 @@ describe('Suite', () => {
         }
       ]
     }
+
+    let assertEqualsError
+    try {
+      assert.equal(666, 999)
+    } catch (e) {
+      assertEqualsError = e
+    }
+
     assertEvents(run(suite), [
       {
         type: 'suiteStarted',
@@ -109,14 +117,7 @@ describe('Suite', () => {
       },
       {
         type: 'assertionFailed',
-        error: {
-          actual: 666,
-          expected: 999,
-          generatedMessage: true,
-          message: '666 == 999',
-          name: 'AssertionError',
-          operator: '=='
-        },
+        error: assertEqualsError,
         assertion: suite.specs[0].descriptions[0].assertions[0]
       },
       {
