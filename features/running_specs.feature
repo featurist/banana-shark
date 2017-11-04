@@ -130,6 +130,7 @@ Feature: Running Specs
       {workingDirectory}/spec/syntaxError.js:2
       });
         ^
+
       SyntaxError: Unexpected end of input
       """
 
@@ -185,7 +186,7 @@ Feature: Running Specs
       () => omg()
         ✖ it => it.equals(99)
       ReferenceError: wtf is not defined
-          at omg (spec/referenceErrorInFactory.js:20:26)
+          at omg (spec/referenceErrorInFactory.js:20:19)
           at describe (spec/referenceErrorInFactory.js:7:11)
 
       () => zomg()
