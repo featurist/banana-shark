@@ -15,13 +15,12 @@ function runExample (name) {
     }
   }
   const listener = new Broadcaster([thrower])
-  return new CommandLineInterface().runWithListener(
-    ['./examples/' + name + '.js'],
-    listener
-  )
-  .then(result => {
-    assert.deepEqual([], errors)
+  return new CommandLineInterface({ listener }).run({
+    paths: ['./examples/' + name + '.js']
   })
+    .then(result => {
+      assert.deepEqual([], errors)
+    })
 }
 
 describe('examples', function () {
