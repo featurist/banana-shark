@@ -14,15 +14,15 @@
   "author": "joshski <joshuachisholm@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "cucumber": "^2.0.0-rc.6",
+    "cucumber": "^4.0.0",
     "electron": "^1.6.2",
-    "electron-mocha": "^3.4.0",
-    "eslint": "^3.13.1",
-    "eslint-config-standard": "^6.2.1",
+    "electron-mocha": "^6.0.0",
+    "eslint": "^4.18.1",
+    "eslint-config-standard": "^11.0.0",
     "eslint-plugin-promise": "^3.4.0",
-    "eslint-plugin-standard": "^2.0.1",
-    "finished-promise": "0.0.2",
+    "eslint-plugin-standard": "^3.0.1",
+    "finished-promise": "0.0.4",
     "mkdirp": "^0.5.1",
-    "mocha": "^3.2.0"
+    "mocha": "^5.0.1"
   }
 }
