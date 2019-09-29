@@ -1,68 +1,95 @@
 Feature: Assertions
 
-Scenario: it.equals(value)
-  Given the file "spec/equals.js" contains:
-    """
-    module.exports = describe =>
+  Scenario: it.equals(value)
+    Given the file "spec/equals.js" contains:
+      """
+      module.exports = describe =>
 
-      describe(
-        () => 1,
-        it => it.equals(1),
-        it => it.equals(2)
-      )
+        describe(
+          () => 1,
+          it => it.equals(1),
+          it => it.equals(2)
+        )
 
-    """
-  When I run "bs spec/equals.js"
-  Then it should exit with code 1
-  And the output should be:
-    """
-    () => 1
-      ✔ it => it.equals(1)
-      ✖ it => it.equals(2)
+      """
+    When I run "bs spec/equals.js"
+    Then it should exit with code 1
+    And the output should be:
+      """
+      () => 1
+        ✔ it => it.equals(1)
+        ✖ it => it.equals(2)
 
-    1 passed, 1 failed
+      1 passed, 1 failed
 
-    () => 1
-      ✖ it => it.equals(2)
-    AssertionError: 1 == 2
-        at it (spec/equals.js:6:14)
-    """
+      () => 1
+        ✖ it => it.equals(2)
+      AssertionError: Expected values to be strictly equal:
 
-  Given the file "spec/deeplyEquals.js" contains:
-    """
-    module.exports = describe =>
+      1 !== 2
 
-      describe(
-        () => ({ x: 1 }),
-        it => it.deeplyEquals({ x: 1 }),
-        it => it.deeplyEquals({ x: 2 }),
-        it => it.deeplyEquals({ x: 1, y: 1 }),
-        it => it.deeplyEquals({ x: '1' })
-      )
+          at Assertion.<anonymous> (spec/equals.js:6:14)
+      """
 
-    """
-  When I run "bs spec/deeplyEquals.js"
-  Then it should exit with code 1
-  And the output should be:
-    """
-    () => ({ x: 1 })
-      ✔ it => it.deeplyEquals({ x: 1 })
-      ✖ it => it.deeplyEquals({ x: 2 })
-      ✖ it => it.deeplyEquals({ x: 1, y: 1 })
-      ✔ it => it.deeplyEquals({ x: '1' })
+  Scenario: it.deeplyEquals(value)
+    Given the file "spec/deeplyEquals.js" contains:
+      """
+      module.exports = describe =>
 
-    2 passed, 2 failed
+        describe(
+          () => ({ x: 1 }),
+          it => it.deeplyEquals({ x: 1 }),
+          it => it.deeplyEquals({ x: 2 }),
+          it => it.deeplyEquals({ x: 1, y: 1 }),
+          it => it.deeplyEquals({ x: '1' })
+        )
 
-    () => ({ x: 1 })
-      ✖ it => it.deeplyEquals({ x: 2 })
-    AssertionError: { x: 1 } deepEqual { x: 2 }
-        at it (spec/deeplyEquals.js:6:14)
+      """
+    When I run "bs spec/deeplyEquals.js"
+    Then it should exit with code 1
+    And the output should be:
+      """
+      () => ({ x: 1 })
+        ✔ it => it.deeplyEquals({ x: 1 })
+        ✖ it => it.deeplyEquals({ x: 2 })
+        ✖ it => it.deeplyEquals({ x: 1, y: 1 })
+        ✖ it => it.deeplyEquals({ x: '1' })
 
-    () => ({ x: 1 })
-      ✖ it => it.deeplyEquals({ x: 1, y: 1 })
-    AssertionError: { x: 1 } deepEqual { x: 1, y: 1 }
-        at it (spec/deeplyEquals.js:7:14)
-    """
+      1 passed, 3 failed
+
+      () => ({ x: 1 })
+        ✖ it => it.deeplyEquals({ x: 2 })
+      AssertionError: Expected values to be strictly deep-equal:
+      + actual - expected
+
+        {
+      +   x: 1
+      -   x: 2
+        }
+          at it.deeplyEquals.x (spec/deeplyEquals.js:6:14)
+
+      () => ({ x: 1 })
+        ✖ it => it.deeplyEquals({ x: 1, y: 1 })
+      AssertionError: Expected values to be strictly deep-equal:
+      + actual - expected
+
+        {
+          x: 1,
+      -   y: 1
+        }
+          at it.deeplyEquals.x (spec/deeplyEquals.js:7:14)
+
+      () => ({ x: 1 })
+        ✖ it => it.deeplyEquals({ x: '1' })
+      AssertionError: Expected values to be strictly deep-equal:
+      + actual - expected
+
+        {
+      +   x: 1
+      -   x: '1'
+        }
+          at Assertion.<anonymous> (spec/deeplyEquals.js:8:14)
+      """
 
   Scenario: it.isGreaterThan(other)
     Given the file "spec/isGreaterThan.js" contains:
@@ -89,7 +116,7 @@ Scenario: it.equals(value)
       () => 123
         ✖ it => it.isGreaterThan(123)
       AssertionError: 123 > 123
-          at it (spec/isGreaterThan.js:6:14)
+          at Assertion.<anonymous> (spec/isGreaterThan.js:6:14)
       """
 
   Scenario: it.isLessThan(other)
@@ -117,7 +144,7 @@ Scenario: it.equals(value)
       () => 123
         ✖ it => it.isLessThan(123)
       AssertionError: 123 < 123
-          at it (spec/isLessThan.js:6:14)
+          at Assertion.<anonymous> (spec/isLessThan.js:6:14)
       """
 
   Scenario: it.isPending(reason)
@@ -176,7 +203,7 @@ Scenario: it.equals(value)
       () => ({ foo: 1 })
         ✖ it => it.has('bar')
       AssertionError: Expected property 'bar'
-          at it (spec/hasProperty.js:6:14)
+          at Assertion.<anonymous> (spec/hasProperty.js:6:14)
       """
 
   Scenario: it.has(property).that
@@ -204,7 +231,7 @@ Scenario: it.equals(value)
       () => ({ foo: 1 })
         ✖ it => it.has('foo').that.isGreaterThan(1)
       AssertionError: 1 > 1
-          at it (spec/hasPropertyThat.js:6:30)
+          at Assertion.<anonymous> (spec/hasPropertyThat.js:6:30)
       """
 
   Scenario: it.throws()
@@ -243,16 +270,24 @@ Scenario: it.equals(value)
 
       () => () => { throw new TypeError('oops') }
         ✖ it => it.throws(TypeError, 'daisy')
-      AssertionError: 'oops' == 'daisy'
-          at it (spec/itThrows.js:8:14)
+      AssertionError: Expected values to be strictly equal:
+      + actual - expected
+
+      + 'oops'
+      - 'daisy'
+          at Assertion.<anonymous> (spec/itThrows.js:8:14)
 
       () => () => { throw new TypeError('oops') }
         ✖ it => it.throws(Error, 'daisy')
-      AssertionError: 'oops' == 'daisy'
-          at it (spec/itThrows.js:11:14)
+      AssertionError: Expected values to be strictly equal:
+      + actual - expected
+
+      + 'oops'
+      - 'daisy'
+          at Assertion.<anonymous> (spec/itThrows.js:11:14)
 
       () => () => { throw new TypeError('oops') }
         ✖ it => it.throws(ReferenceError)
       AssertionError: Expected ReferenceError, but TypeError was thrown
-          at it (spec/itThrows.js:12:14)
+          at Assertion.<anonymous> (spec/itThrows.js:12:14)
       """

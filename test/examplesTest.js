@@ -19,7 +19,7 @@ function runExample (name) {
     paths: ['./examples/' + name + '.js']
   })
     .then(result => {
-      assert.deepEqual([], errors)
+      assert.deepStrictEqual([], errors)
     })
 }
 

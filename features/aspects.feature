@@ -121,7 +121,7 @@ Feature: Aspects
     And the output should be:
       """
       Error: Aspect name is required
-          at module.exports.describe (spec/anonymousAspect.js:3:12)
+          at module.exports (spec/anonymousAspect.js:3:12)
       """
 
   Scenario: Trying to create an aspect with a zero-argument function
@@ -138,5 +138,5 @@ Feature: Aspects
     And the output should be:
       """
       Error: Aspects take assertions (you passed a factory: () => 666)
-          at module.exports.describe (spec/zeroArgumentAspect.js:3:12)
+          at module.exports (spec/zeroArgumentAspect.js:3:12)
       """

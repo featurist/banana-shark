@@ -76,8 +76,11 @@ Feature: Running Specs
 
       () => 666
         ✖ it => it.equals(777)
-      AssertionError: 666 == 777
-          at it (spec/singleFailing.js:5:14)
+      AssertionError: Expected values to be strictly equal:
+
+      666 !== 777
+
+          at Assertion.<anonymous> (spec/singleFailing.js:5:14)
       """
 
   Scenario: Passing and failing
@@ -109,13 +112,19 @@ Feature: Running Specs
 
       () => 3
         ✖ it => it.equals(4)
-      AssertionError: 3 == 4
-          at it (spec/passingAndFailing.js:5:30)
+      AssertionError: Expected values to be strictly equal:
+
+      3 !== 4
+
+          at Assertion.<anonymous> (spec/passingAndFailing.js:5:30)
 
       () => 5
         ✖ it => it.equals(6)
-      AssertionError: 5 == 6
-          at it (spec/passingAndFailing.js:6:30)
+      AssertionError: Expected values to be strictly equal:
+
+      5 !== 6
+
+          at Assertion.<anonymous> (spec/passingAndFailing.js:6:30)
       """
 
   Scenario: Running a single spec with a syntax error
@@ -127,9 +136,9 @@ Feature: Running Specs
     Then it should exit with code 1
     And the output should be:
       """
-      {workingDirectory}/spec/syntaxError.js:2
-      });
-        ^
+      {workingDirectory}/spec/syntaxError.js:1
+      decribe('this is invalid', () => {
+                                        
 
       SyntaxError: Unexpected end of input
       """
@@ -181,19 +190,19 @@ Feature: Running Specs
       () => wtf()
         ✖ it => it.equals(99)
       ReferenceError: wtf is not defined
-          at describe (spec/referenceErrorInFactory.js:3:11)
+          at Description.factory (spec/referenceErrorInFactory.js:3:11)
 
       () => omg()
         ✖ it => it.equals(99)
       ReferenceError: wtf is not defined
           at omg (spec/referenceErrorInFactory.js:20:19)
-          at describe (spec/referenceErrorInFactory.js:7:11)
+          at Description.factory (spec/referenceErrorInFactory.js:7:11)
 
       () => zomg()
         ✖ it => it.equals(99)
       ReferenceError: wtf is not defined
-          at module.exports (spec/zomg.js:1:86)
-          at describe (spec/referenceErrorInFactory.js:11:11)
+          at module.exports (spec/zomg.js:1:24)
+          at Description.factory (spec/referenceErrorInFactory.js:11:11)
       """
 
   Scenario: Running a single nested passing spec
@@ -254,7 +263,10 @@ Feature: Running Specs
         prints 100 lines
           lines => lines.length
             ✖ 100
-      AssertionError: 0 == 100
+      AssertionError: Expected values to be strictly equal:
+
+      0 !== 100
+
       """
 
   Scenario: Running a single nested passing spec

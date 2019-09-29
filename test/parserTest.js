@@ -10,7 +10,7 @@ describe('Parser', () => {
     const actualParseResult = new Parser().parse(spec)
     stringify.functionsIn(expectedParseResult)
     stringify.functionsIn(actualParseResult)
-    assert.deepEqual(actualParseResult, expectedParseResult)
+    assert.deepStrictEqual(actualParseResult, expectedParseResult)
   }
 
   it('parses an anonymous description', () => {
