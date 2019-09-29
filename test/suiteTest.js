@@ -20,8 +20,8 @@ describe('Suite', () => {
         if (event[key].ast) event[key] = event[key].ast
       }
     })
-    assert.deepEqual(actualEvents.map(e => e.type), expectedEvents.map(e => e.type))
-    assert.deepEqual(actualEvents, expectedEvents)
+    assert.deepStrictEqual(actualEvents.map(e => e.type), expectedEvents.map(e => e.type))
+    assert.deepStrictEqual(actualEvents, expectedEvents)
   }
 
   it('runs a single passing spec', () => {
@@ -93,7 +93,7 @@ describe('Suite', () => {
 
     let assertEqualsError
     try {
-      assert.equal(666, 999)
+      assert.strictEqual(666, 999)
     } catch (e) {
       assertEqualsError = e
     }
@@ -255,7 +255,7 @@ describe('Suite.expand', () => {
         }
       ]
     }
-    assert.deepEqual(
+    assert.deepStrictEqual(
       stringify.functionsIn(Suite.expand(inputSuite)),
       stringify.functionsIn(outputSuite)
     )
@@ -323,7 +323,7 @@ describe('Suite.expand', () => {
         }
       ]
     }
-    assert.deepEqual(
+    assert.deepStrictEqual(
       stringify.functionsIn(Suite.expand(inputSuite)),
       stringify.functionsIn(outputSuite)
     )

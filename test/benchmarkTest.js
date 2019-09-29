@@ -17,7 +17,7 @@ function runMochaTest () {
     })
 
     it('does some stuff', function () {
-      assert.equal(this.x, 123)
+      assert.strictEqual(this.x, 123)
     })
   })
 }

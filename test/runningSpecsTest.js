@@ -21,8 +21,8 @@ describe('Running specs', () => {
         if (event[key].ast) event[key] = event[key].ast
       }
     })
-    assert.deepEqual(actualEvents.map(e => e.type), expectedEvents.map(e => e.type))
-    assert.deepEqual(actualEvents, expectedEvents)
+    assert.deepStrictEqual(actualEvents.map(e => e.type), expectedEvents.map(e => e.type))
+    assert.deepStrictEqual(actualEvents, expectedEvents)
   }
 
   it('runs multiple specs with nesting and aspects', () => {
@@ -64,7 +64,7 @@ describe('Running specs', () => {
 
     let assertEqualsError
     try {
-      assert.equal(666, 999)
+      assert.strictEqual(666, 999)
     } catch (e) {
       assertEqualsError = e
     }

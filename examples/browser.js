@@ -64,7 +64,7 @@ class WeatherApp {
 class Builder {
   constructor (options) {
     this.options = options
-    for (let key in options) { this[key] = options[key] }
+    for (const key in options) { this[key] = options[key] }
   }
 
   with (options) {

@@ -22,7 +22,7 @@ describe('Broadcaster', function () {
       const broadcaster = new Broadcaster([listener1, listener2])
       broadcaster[event](123)
       broadcaster[event](456, 789)
-      assert.deepEqual(listener1.events, [[123], [456]])
+      assert.deepStrictEqual(listener1.events, [[123], [456]])
     })
   });
 
@@ -36,7 +36,7 @@ describe('Broadcaster', function () {
       const broadcaster = new Broadcaster([listener1, listener2])
       broadcaster[event](123)
       broadcaster[event](456, 789)
-      assert.deepEqual(listener1.events, [[123, undefined], [456, 789]])
+      assert.deepStrictEqual(listener1.events, [[123, undefined], [456, 789]])
     })
   })
 })
