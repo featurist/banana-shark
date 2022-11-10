@@ -15,7 +15,7 @@
   "license": "MIT",
   "devDependencies": {
     "cucumber": "5.1.0",
-    "electron": "6.0.10",
+    "electron": "18.3.7",
     "electron-mocha": "8.1.2",
     "eslint": "6.5.0",
     "eslint-config-standard": "14.1.0",
